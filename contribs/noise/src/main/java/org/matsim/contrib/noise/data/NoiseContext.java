@@ -28,7 +28,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Coord;
@@ -162,56 +167,77 @@ public class NoiseContext {
 	}
 
 	private void setRelevantLinkInfo() {
-
+		int threads = scenario.getConfig().global().getNumberOfThreads();
+		threads = Math.max(1, threads);
+		log.info("compute relevant linkinfo with " + threads + " threads");
 		Counter cnt = new Counter("set relevant link-info # ");
 		// go through all rp's and throw them away. We need noise-rps from here on.
 		ConcurrentLinkedQueue<ReceiverPoint> rps = new ConcurrentLinkedQueue<>(this.grid.getAndClearReceiverPoints().values());
-		ReceiverPoint rp = null;
-		while((rp = rps.poll()) != null){
-			
-			NoiseReceiverPoint nrp = new NoiseReceiverPoint(rp.getId(), rp.getCoord());
-
-			// get the zone grid cell around the receiver point
-			Set<Id<Link>> potentialLinks = new HashSet<>();
-			Tuple<Integer,Integer>[] zoneTuples = getZoneTuplesForLinks(nrp.getCoord());
-			for(Tuple<Integer, Integer> key: zoneTuples) {
-				List<Id<Link>> links = zoneTuple2listOfLinkIds.get(key);
-				if(links != null) {
-					potentialLinks.addAll(links);
-				}
-			}
-
-			// go through these potential relevant link Ids
-			Set<Id<Link>> relevantLinkIds = new HashSet<>();
-			for (Id<Link> linkId : potentialLinks){
-				if (!(relevantLinkIds.contains(linkId))) {
-					Link candidateLink = scenario.getNetwork().getLinks().get(linkId);
-					//maybe replace the disctance-calculation to remove dupolicated code. Not absolute sure, since tests are failing, when method is replaced.
-					//double distance = CoordUtils.distancePointLinesegment(candidateLink.getFromNode().getCoord(), candidateLink.getToNode().getCoord(), nrp.getCoord());
-					double distance = calcDistance(nrp, candidateLink);
+		
+		List<Future<Map<Id<ReceiverPoint>, NoiseReceiverPoint>>> futures = new ArrayList<>();
+		ExecutorService service = Executors.newFixedThreadPool(threads);
+		futures.add(service.submit(new Callable<Map<Id<ReceiverPoint>, NoiseReceiverPoint>>() {
+			@Override
+			public Map<Id<ReceiverPoint>, NoiseReceiverPoint> call() throws Exception {
+				Map<Id<ReceiverPoint>, NoiseReceiverPoint> local = new HashMap<>();
+				ReceiverPoint rp = null;
+				while((rp = rps.poll()) != null){
+					NoiseReceiverPoint nrp = new NoiseReceiverPoint(rp.getId(), rp.getCoord());
 					
-					if (distance < noiseParams.getRelevantRadius()){
-						
-						relevantLinkIds.add(linkId);
-						// wouldn't it be good to check distance < minDistance here? DR20180215
-						if (distance == 0) {
-							double minimumDistance = 5.;
-							distance = minimumDistance;
-							log.warn("Distance between " + linkId + " and " + rp.getId() + " is 0. The calculation of the correction term Ds requires a distance > 0. Therefore, setting the distance to a minimum value of " + minimumDistance + ".");
+					// get the zone grid cell around the receiver point
+					Set<Id<Link>> potentialLinks = new HashSet<>();
+					Tuple<Integer,Integer>[] zoneTuples = getZoneTuplesForLinks(nrp.getCoord());
+					for(Tuple<Integer, Integer> key: zoneTuples) {
+						List<Id<Link>> links = zoneTuple2listOfLinkIds.get(key);
+						if(links != null) {
+							potentialLinks.addAll(links);
 						}
-						double correctionTermDs = NoiseEquations.calculateDistanceCorrection(distance);
-						double correctionTermAngle = calculateAngleImmissionCorrection(nrp.getCoord(), scenario.getNetwork().getLinks().get(linkId));
-						
-						nrp.setLinkId2distanceCorrection(linkId, correctionTermDs);
-						nrp.setLinkId2angleCorrection(linkId, correctionTermAngle);
 					}
+					
+					// go through these potential relevant link Ids
+					Set<Id<Link>> relevantLinkIds = new HashSet<>();
+					for (Id<Link> linkId : potentialLinks){
+						if (!(relevantLinkIds.contains(linkId))) {
+							Link candidateLink = scenario.getNetwork().getLinks().get(linkId);
+							//maybe replace the disctance-calculation to remove dupolicated code. Not absolute sure, since tests are failing, when method is replaced.
+							//double distance = CoordUtils.distancePointLinesegment(candidateLink.getFromNode().getCoord(), candidateLink.getToNode().getCoord(), nrp.getCoord());
+							double distance = calcDistance(nrp, candidateLink);
+							
+							if (distance < noiseParams.getRelevantRadius()){
+								
+								relevantLinkIds.add(linkId);
+								// wouldn't it be good to check distance < minDistance here? DR20180215
+								if (distance == 0) {
+									double minimumDistance = 5.;
+									distance = minimumDistance;
+									log.warn("Distance between " + linkId + " and " + rp.getId() + " is 0. The calculation of the correction term Ds requires a distance > 0. Therefore, setting the distance to a minimum value of " + minimumDistance + ".");
+								}
+								double correctionTermDs = NoiseEquations.calculateDistanceCorrection(distance);
+								double correctionTermAngle = calculateAngleImmissionCorrection(nrp.getCoord(), scenario.getNetwork().getLinks().get(linkId));
+								
+								nrp.setLinkId2distanceCorrection(linkId, correctionTermDs);
+								nrp.setLinkId2angleCorrection(linkId, correctionTermAngle);
+							}
+						}
+					}
+					
+					local.put(nrp.getId(), nrp);
+					cnt.incCounter();
 				}
+				return local;
 			}
-			
-			this.noiseReceiverPoints.put(nrp.getId(), nrp);
-			cnt.incCounter();
+		}));
+		
+		for(Future<Map<Id<ReceiverPoint>, NoiseReceiverPoint>> f: futures) {
+			try {
+				this.noiseReceiverPoints.putAll(f.get());
+			} catch (Exception e) {
+				throw new RuntimeException("error while computing relevant linkinfo", e);
+			}
 		}
 		cnt.printCounter();
+		// release for GC
+		this.zoneTuple2listOfLinkIds.clear();
 	}
 	
 	/**
