@@ -21,6 +21,8 @@ package org.matsim.contrib.emissions.example.archive;
 
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.contrib.emissions.EmissionModule;
+import org.matsim.contrib.emissions.roadTypeMapping.HbefaRoadTypeMapping;
+import org.matsim.contrib.emissions.roadTypeMapping.RoadTypeMappingProvider;
 import org.matsim.contrib.emissions.utils.EmissionsConfigGroup;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
@@ -44,7 +46,7 @@ import org.matsim.core.scenario.ScenarioUtils;
 
 public class RunEmissionToolOnlineExample {
 
-	private static final String configFile = "./test/input/org/matsim/contrib/emissions/config.xml";
+	private static final String configFile = "./test/input/org/matsim/contrib/emissions/config_v2.xml";
 	
 	private final Config config ;
 	
@@ -67,6 +69,7 @@ public class RunEmissionToolOnlineExample {
 		controler.addOverridingModule(new AbstractModule() {
 			@Override
 			public void install() {
+				bind(HbefaRoadTypeMapping.class).toProvider(RoadTypeMappingProvider.class);
 				bind(EmissionModule.class).asEagerSingleton();
 			}
 		});

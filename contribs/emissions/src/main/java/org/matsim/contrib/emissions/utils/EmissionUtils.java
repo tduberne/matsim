@@ -19,15 +19,20 @@
  * *********************************************************************** */
 package org.matsim.contrib.emissions.utils;
 
+import com.google.inject.Provides;
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.population.Person;
 import org.matsim.api.core.v01.population.Population;
+import org.matsim.contrib.emissions.roadTypeMapping.HbefaRoadTypeMapping;
+import org.matsim.contrib.emissions.roadTypeMapping.VisumHbefaRoadTypeMapping;
 import org.matsim.contrib.emissions.types.ColdPollutant;
 import org.matsim.contrib.emissions.types.WarmPollutant;
+import org.matsim.core.config.Config;
 
+import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -51,6 +56,18 @@ public class EmissionUtils {
 			listOfPollutants.add(cp.toString());
 		}
 	}
+
+
+	public static Map<String, Integer> createIndexFromKey(String strLine) {
+		String[] keys = strLine.split(";") ;
+
+		Map<String, Integer> indexFromKey = new HashMap<>() ;
+		for ( int ii = 0; ii < keys.length; ii++ ) {
+			indexFromKey.put(keys[ii], ii ) ;
+		}
+		return indexFromKey ;
+	}
+
 
 	public SortedMap<String, Double> sumUpEmissions(Map<WarmPollutant, Double> warmEmissions, Map<ColdPollutant, Double> coldEmissions) {
 		SortedMap<String, Double> pollutant2sumOfEmissions = new TreeMap<>();
