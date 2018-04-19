@@ -394,6 +394,11 @@
 			<artifactId>kml-v_2_2_0</artifactId>
 			<version>2.2.0</version>
 		</dependency>
+		<dependency>
+    			<groupId>org.apache.commons</groupId>
+    			<artifactId>commons-math3</artifactId>
+    			<version>3.2</version>
+		</dependency>
 		<!--According to https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j/43574427#43574427,-->
 		<!--the following is needed to include jaxb into java9 and later. kai based on thibaut, feb'18-->
 		<!-- Java 6 = JAX-B Version 2.0   -->
