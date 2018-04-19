@@ -116,7 +116,18 @@ public final class VspExperimentalConfigGroup extends ReflectiveConfigGroup {
 		this.isUsingOpportunityCostOfTimeForLocationChoice = isUsingOpportunityCostOfTimeForLocationChoice;
 	}
 	// ---
-
+	private static final String VTTSanalysisInterval = "vttsAnalysisInterval" ; 
+	private int vttsAnalysisInterval = 0 ;
+	@StringGetter(VTTSanalysisInterval)
+	public int getVTTSanalysisInterval() {
+		return vttsAnalysisInterval;
+	}
+	@StringSetter(VTTSanalysisInterval)
+	public void setVTTSanalysisInterval(int vttsAnalysisInterval) {
+		testForLocked() ;
+		this.vttsAnalysisInterval = vttsAnalysisInterval;
+	}
+	// ---
 
 
 	@Override

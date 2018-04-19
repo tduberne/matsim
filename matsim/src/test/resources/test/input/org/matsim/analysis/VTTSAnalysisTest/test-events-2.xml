@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<events version="1.0">
+	<event time="33171.0" type="actend" person="b1240739" link="102259" facility="110404611" actType="home"  />
+	<event time="33171.0" type="departure" person="b1240739" link="102259" legMode="car"  />
+	<event time="36444.0" type="travelled" person="b1240739" distance="5456.116157435636"  />
+	<event time="36444.0" type="arrival" person="b1240739" link="8079" legMode="car"  />
+	<event time="36444.0" type="actstart" person="b1240739" link="8079" facility="110705613" actType="shop_other"  />
+	<event time="45551.0" type="actend" person="b1240739" link="8079" facility="110705613" actType="shop_other"  />
+	<event time="45551.0" type="departure" person="b1240739" link="8079" legMode="car"  />
+	<event time="48281.0" type="travelled" person="b1240739" distance="4550.800047090952"  />
+	<event time="48281.0" type="arrival" person="b1240739" link="107793" legMode="car"  />
+	<event time="48281.0" type="actstart" person="b1240739" link="107793" facility="110402427" actType="shop_other"  />
+	<event time="48281.0" type="actend" person="b1240739" link="107793" facility="110402427" actType="shop_other"  />
+	<event time="48281.0" type="departure" person="b1240739" link="107793" legMode="car"  />
+	<event time="48281.0" type="PersonEntersVehicle" person="b1240739" vehicle="b1240739"  />
+	<event time="48607.0" type="PersonLeavesVehicle" person="b1240739" vehicle="b1240739"  />
+	<event time="48607.0" type="arrival" person="b1240739" link="102259" legMode="car"  />
+	<event time="48607.0" type="actstart" person="b1240739" link="102259" facility="110404611" actType="home"  />
+	<event time="48607.0" type="actend" person="b1240739" link="102259" facility="110404611" actType="home"  />
+	<event time="48607.0" type="departure" person="b1240739" link="102259" legMode="car"  />
+	<event time="50240.0" type="travelled" person="b1240739" distance="2721.991765700326"  />
+	<event time="50240.0" type="arrival" person="b1240739" link="108122" legMode="car"  />
+	<event time="50240.0" type="actstart" person="b1240739" link="108122" facility="110404612" actType="shop_daily"  />
+	<event time="50240.0" type="actend" person="b1240739" link="108122" facility="110404612" actType="shop_daily"  />
+	<event time="69671.0" type="departure" person="b1240739" link="12926" legMode="car"  />
+	<event time="71895.0" type="travelled" person="b1240739" distance="3707.1092432028927"  />
+	<event time="71895.0" type="arrival" person="b1240739" link="102259" legMode="car"  />
+	<event time="71895.0" type="actstart" person="b1240739" link="102259" facility="110404611" actType="home"  />
+</events>

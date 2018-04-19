@@ -58,6 +58,7 @@ public final class ControlerDefaultsModule extends AbstractModule {
         install(new PtCountsModule());
         install(new VspPlansCleanerModule());
         install(new SnapshotWritersModule());
+        install(new VTTSAnalysisModule());
 
     	/* Comment by kai (mz thinks it is not helpful): The framework eventually calls the above method, which calls the include 
         * methods , which (fairly quickly) call their own install methods, etc.  Eventually, everything is resolved down to the
