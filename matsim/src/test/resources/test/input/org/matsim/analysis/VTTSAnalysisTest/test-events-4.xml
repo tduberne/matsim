@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<events version="1.0">
+	<event time="28800.0" type="actend" person="b1240739" link="102259" facility="110404611" actType="home"  />
+	<event time="28800.0" type="departure" person="b1240739" link="102259" legMode="car"  />
+	<event time="28800.0" type="travelled" person="b1240739" distance="5456.116157435636"  />
+	<event time="28800.0" type="arrival" person="b1240739" link="8079" legMode="car"  />
+	<event time="28800.0" type="actstart" person="b1240739" link="8079" facility="110705613" actType="work"  />
+	<event time="57600.0" type="actend" person="b1240739" link="8079" facility="110705613" actType="shop_other"  />
+	<event time="57600.0" type="departure" person="b1240739" link="8079" legMode="car"  />
+	<event time="57600.0" type="travelled" person="b1240739" distance="4550.800047090952"  />
+	<event time="57600.0" type="arrival" person="b1240739" link="107793" legMode="car"  />
+	<event time="57600.0" type="actstart" person="b1240739" link="107793" facility="110402427" actType="home"  />
+</events>

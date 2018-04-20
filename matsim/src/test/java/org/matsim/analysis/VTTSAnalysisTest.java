@@ -122,9 +122,6 @@ public class VTTSAnalysisTest {
 		reader.readFile(eventsFile);
 		
 		vttsHandler.computeFinalVTTSforTripToOvernightActivity();
-				
-		vttsHandler.printVTTS(testUtils.getOutputDirectory() + "VTTS.csv");
-		vttsHandler.printAvgVTTSperPerson(testUtils.getOutputDirectory() + "avgVTTS.csv"); 
 		
 		Assert.assertEquals("wrong VTTS", 15.4866868060989, vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(1), MatsimTestUtils.EPSILON);
 		Assert.assertEquals("wrong VTTS", 79.0949637642268, vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(2), MatsimTestUtils.EPSILON);
@@ -205,9 +202,6 @@ public class VTTSAnalysisTest {
 		reader.readFile(eventsFile);
 		
 		vttsHandler.computeFinalVTTSforTripToOvernightActivity();
-				
-		vttsHandler.printVTTS(testUtils.getOutputDirectory() + "VTTS.csv");
-		vttsHandler.printAvgVTTSperPerson(testUtils.getOutputDirectory() + "avgVTTS.csv"); 
 		
 		Assert.assertEquals("wrong VTTS", 44., vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(1), MatsimTestUtils.EPSILON);
 	}
@@ -289,12 +283,166 @@ public class VTTSAnalysisTest {
 		reader.readFile(eventsFile);
 		
 		vttsHandler.computeFinalVTTSforTripToOvernightActivity();
-				
-		vttsHandler.printVTTS(testUtils.getOutputDirectory() + "VTTS.csv");
-		vttsHandler.printAvgVTTSperPerson(testUtils.getOutputDirectory() + "avgVTTS.csv"); 
 		
 		Assert.assertEquals("wrong VTTS", 15.4866868060989, vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(1), MatsimTestUtils.EPSILON);
 		Assert.assertEquals("wrong VTTS", 79.0949637642268, vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(2), MatsimTestUtils.EPSILON);
 		Assert.assertEquals("wrong VTTS", 17.805855345339, vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(3), MatsimTestUtils.EPSILON);
-	}	
+	}
+	
+	
+	// activity duration = typical duration --> VTTS = beta_performing
+	@Test
+	public final void test4() {
+		
+		Config config = ConfigUtils.createConfig();	
+		config.planCalcScore().setPerforming_utils_hr(6.0);
+		final double traveling = -0.0;
+		config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling);
+		config.planCalcScore().setMarginalUtilityOfMoney(1.0);
+		config.planCalcScore().setEarlyDeparture_utils_hr(0.);
+		config.planCalcScore().setLateArrival_utils_hr(0.);
+		config.planCalcScore().setMarginalUtlOfWaiting_utils_hr(0.);
+		
+		ActivityParams actParams1 = new ActivityParams("home");
+		actParams1.setMinimalDuration(8. * 3600);
+		actParams1.setPriority(1.0);
+		actParams1.setScoringThisActivityAtAll(true);
+		actParams1.setTypicalDuration(18. * 3600);
+		actParams1.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.relative);
+		
+		ActivityParams actParams2 = new ActivityParams("work");
+		actParams2.setPriority(1.0);
+		actParams2.setScoringThisActivityAtAll(true);
+		actParams2.setTypicalDuration(8. * 3600);
+		actParams2.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.relative);
+		
+		config.planCalcScore().addActivityParams(actParams1);
+		config.planCalcScore().addActivityParams(actParams2);
+
+		String populationFile = null;
+		String networkFile = null;
+		
+		config.plans().setInputFile(populationFile);
+		config.network().setInputFile(networkFile);
+		
+		Scenario scenario = ScenarioUtils.loadScenario(config);
+		EventsManager events = EventsUtils.createEventsManager();
+		
+		VTTSAnalysis vttsHandler = new VTTSAnalysis();
+		vttsHandler.setScenario(scenario);
+		events.addHandler(vttsHandler);
+						
+		String eventsFile = testUtils.getClassInputDirectory() + "test-events-4.xml";
+
+		MatsimEventsReader reader = new MatsimEventsReader(events);
+		reader.readFile(eventsFile);
+		
+		vttsHandler.computeFinalVTTSforTripToOvernightActivity();
+					
+		Assert.assertEquals("wrong VTTS", config.planCalcScore().getPerforming_utils_hr(), vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(1), 0.001);
+	}
+	
+	// activity duration > typical duration --> VTTS < beta_performing
+	@Test
+	public final void test5() {
+		
+		Config config = ConfigUtils.createConfig();	
+		config.planCalcScore().setPerforming_utils_hr(6.0);
+		final double traveling = -0.0;
+		config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling);
+		config.planCalcScore().setMarginalUtilityOfMoney(1.0);
+		config.planCalcScore().setEarlyDeparture_utils_hr(0.);
+		config.planCalcScore().setLateArrival_utils_hr(0.);
+		config.planCalcScore().setMarginalUtlOfWaiting_utils_hr(0.);
+		
+		ActivityParams actParams1 = new ActivityParams("home");
+		actParams1.setMinimalDuration(8. * 3600);
+		actParams1.setPriority(1.0);
+		actParams1.setScoringThisActivityAtAll(true);
+		actParams1.setTypicalDuration(18. * 3600);
+		actParams1.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.relative);
+		
+		ActivityParams actParams2 = new ActivityParams("work");
+		actParams2.setPriority(1.0);
+		actParams2.setScoringThisActivityAtAll(true);
+		actParams2.setTypicalDuration(4. * 3600);
+		actParams2.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.relative);
+		
+		config.planCalcScore().addActivityParams(actParams1);
+		config.planCalcScore().addActivityParams(actParams2);
+
+		String populationFile = null;
+		String networkFile = null;
+		
+		config.plans().setInputFile(populationFile);
+		config.network().setInputFile(networkFile);
+		
+		Scenario scenario = ScenarioUtils.loadScenario(config);
+		EventsManager events = EventsUtils.createEventsManager();
+		
+		VTTSAnalysis vttsHandler = new VTTSAnalysis();
+		vttsHandler.setScenario(scenario);
+		events.addHandler(vttsHandler);
+						
+		String eventsFile = testUtils.getClassInputDirectory() + "test-events-4.xml";
+
+		MatsimEventsReader reader = new MatsimEventsReader(events);
+		reader.readFile(eventsFile);
+		
+		vttsHandler.computeFinalVTTSforTripToOvernightActivity();
+						
+		Assert.assertEquals("wrong VTTS", true, config.planCalcScore().getPerforming_utils_hr() > vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(1));
+	}
+	
+	// activity duration < typical duration --> VTTS > beta_performing
+	@Test
+	public final void test6() {
+		
+		Config config = ConfigUtils.createConfig();	
+		config.planCalcScore().setPerforming_utils_hr(6.0);
+		final double traveling = -0.0;
+		config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling);
+		config.planCalcScore().setMarginalUtilityOfMoney(1.0);
+		config.planCalcScore().setEarlyDeparture_utils_hr(0.);
+		config.planCalcScore().setLateArrival_utils_hr(0.);
+		config.planCalcScore().setMarginalUtlOfWaiting_utils_hr(0.);
+		
+		ActivityParams actParams1 = new ActivityParams("home");
+		actParams1.setMinimalDuration(8. * 3600);
+		actParams1.setPriority(1.0);
+		actParams1.setScoringThisActivityAtAll(true);
+		actParams1.setTypicalDuration(18. * 3600);
+		actParams1.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.relative);
+		
+		ActivityParams actParams2 = new ActivityParams("work");
+		actParams2.setPriority(1.0);
+		actParams2.setScoringThisActivityAtAll(true);
+		actParams2.setTypicalDuration(12. * 3600);
+		actParams2.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.relative);
+		
+		config.planCalcScore().addActivityParams(actParams1);
+		config.planCalcScore().addActivityParams(actParams2);
+
+		String populationFile = null;
+		String networkFile = null;
+		
+		config.plans().setInputFile(populationFile);
+		config.network().setInputFile(networkFile);
+		
+		Scenario scenario = ScenarioUtils.loadScenario(config);
+		EventsManager events = EventsUtils.createEventsManager();
+		
+		VTTSAnalysis vttsHandler = new VTTSAnalysis();
+		vttsHandler.setScenario(scenario);
+		events.addHandler(vttsHandler);
+						
+		String eventsFile = testUtils.getClassInputDirectory() + "test-events-4.xml";
+
+		MatsimEventsReader reader = new MatsimEventsReader(events);
+		reader.readFile(eventsFile);
+		
+		vttsHandler.computeFinalVTTSforTripToOvernightActivity();
+						
+		Assert.assertEquals("wrong VTTS", true, config.planCalcScore().getPerforming_utils_hr() < vttsHandler.getPersonId2TripNr2VTTSh().get(Id.createPersonId("b1240739")).get(1));
+	}
 }
