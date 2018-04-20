@@ -201,80 +201,85 @@ ActivityStartEventHandler, ActivityEndEventHandler, PersonDepartureEventHandler,
 	
 	private void computeVTTS(Id<Person> personId, double activityEndTime) {
 		
-		double activityDelayDisutilityOneSec = 0.;
-		
-		final VTTSMarginalSumScoringFunction marginalSumScoringFunction = new VTTSMarginalSumScoringFunction(
-				new ScoringParameters.Builder(scenario.getConfig().planCalcScore(), scenario.getConfig().planCalcScore().getScoringParameters(null), scenario.getConfig().scenario()).build());
-		// TODO: account for different scoring parameters for different subpopulations
-		
-		// First, check if the agent has arrived at an activity
-		if (this.personId2currentActivityType.containsKey(personId) && this.personId2currentActivityStartTime.containsKey(personId)) {
+		if (this.personId2currentTripMode.get(personId) == null) {
+			// No mode stored for this person and trip. This indicates that the current trip mode was skipped.
+			// Thus, do not compute any VTTS for this trip.
+		} else {
+			double activityDelayDisutilityOneSec = 0.;
 			
-			if (activityEndTime == Time.getUndefinedTime()) {
-				// The end time is undefined...
-															
-				// ... now handle the first and last OR overnight activity. This is figured out by the scoring function itself (depending on the activity types).
-					
-				Activity activityMorning = PopulationUtils.createActivityFromLinkId(this.personId2firstActivityType.get(personId), null);
-				activityMorning.setEndTime(this.personId2firstActivityEndTime.get(personId));
+			final VTTSMarginalSumScoringFunction marginalSumScoringFunction = new VTTSMarginalSumScoringFunction(
+					new ScoringParameters.Builder(scenario.getConfig().planCalcScore(), scenario.getConfig().planCalcScore().getScoringParameters(null), scenario.getConfig().scenario()).build());
+			// TODO: account for different scoring parameters for different subpopulations
+			
+			// First, check if the agent has arrived at an activity
+			if (this.personId2currentActivityType.containsKey(personId) && this.personId2currentActivityStartTime.containsKey(personId)) {
 				
-				Activity activityEvening = PopulationUtils.createActivityFromLinkId(this.personId2currentActivityType.get(personId), null);
-				activityEvening.setStartTime(this.personId2currentActivityStartTime.get(personId));
+				if (activityEndTime == Time.getUndefinedTime()) {
+					// The end time is undefined...
+																
+					// ... now handle the first and last OR overnight activity. This is figured out by the scoring function itself (depending on the activity types).
+						
+					Activity activityMorning = PopulationUtils.createActivityFromLinkId(this.personId2firstActivityType.get(personId), null);
+					activityMorning.setEndTime(this.personId2firstActivityEndTime.get(personId));
 					
-				activityDelayDisutilityOneSec = marginalSumScoringFunction.getOvernightActivityDelayDisutility(activityMorning, activityEvening, 1.);
+					Activity activityEvening = PopulationUtils.createActivityFromLinkId(this.personId2currentActivityType.get(personId), null);
+					activityEvening.setStartTime(this.personId2currentActivityStartTime.get(personId));
+						
+					activityDelayDisutilityOneSec = marginalSumScoringFunction.getOvernightActivityDelayDisutility(activityMorning, activityEvening, 1.);
+					
+				} else {
+					// The activity has an end time indicating a 'normal' activity.
+					
+					Activity activity = PopulationUtils.createActivityFromLinkId(this.personId2currentActivityType.get(personId), null);
+					activity.setStartTime(this.personId2currentActivityStartTime.get(personId));
+					activity.setEndTime(activityEndTime);	
+					activityDelayDisutilityOneSec = marginalSumScoringFunction.getNormalActivityDelayDisutility(activity, 1.);
+				}
 				
 			} else {
-				// The activity has an end time indicating a 'normal' activity.
+				// No, there is no information about the current activity which indicates that the trip (with the delay) was not completed.
 				
-				Activity activity = PopulationUtils.createActivityFromLinkId(this.personId2currentActivityType.get(personId), null);
-				activity.setStartTime(this.personId2currentActivityStartTime.get(personId));
-				activity.setEndTime(activityEndTime);	
-				activityDelayDisutilityOneSec = marginalSumScoringFunction.getNormalActivityDelayDisutility(activity, 1.);
-			}
-			
-		} else {
-			// No, there is no information about the current activity which indicates that the trip (with the delay) was not completed.
-			
-			if (incompletedPlanWarning <= 10) {
-				log.warn("Agent " + personId + " has not yet completed the plan/trip (the agent is probably stucking). Cannot compute the disutility of being late at this activity. "
-						+ "Something like the disutility of not arriving at the activity is required. Try to avoid this by setting a smaller stuck time period.");
-				log.warn("Setting the disutilty of being delayed on the previous trip using the config parameters; assuming the marginal disutility of being delayed at the (hypothetical) activity to be equal to beta_performing: " + this.scenario.getConfig().planCalcScore().getPerforming_utils_hr());
-			
-				if (incompletedPlanWarning == 10) {
-					log.warn("Additional warnings of this type are suppressed.");
+				if (incompletedPlanWarning <= 10) {
+					log.warn("Agent " + personId + " has not yet completed the plan/trip (the agent is probably stucking). Cannot compute the disutility of being late at this activity. "
+							+ "Something like the disutility of not arriving at the activity is required. Try to avoid this by setting a smaller stuck time period.");
+					log.warn("Setting the disutilty of being delayed on the previous trip using the config parameters; assuming the marginal disutility of being delayed at the (hypothetical) activity to be equal to beta_performing: " + this.scenario.getConfig().planCalcScore().getPerforming_utils_hr());
+				
+					if (incompletedPlanWarning == 10) {
+						log.warn("Additional warnings of this type are suppressed.");
+					}
+					incompletedPlanWarning++;
 				}
-				incompletedPlanWarning++;
+				activityDelayDisutilityOneSec = (1.0 / 3600.) * this.scenario.getConfig().planCalcScore().getPerforming_utils_hr();
 			}
-			activityDelayDisutilityOneSec = (1.0 / 3600.) * this.scenario.getConfig().planCalcScore().getPerforming_utils_hr();
-		}
-		
-		// Calculate the agent's trip delay disutility.
-		// (Could be done similar to the activity delay disutility. As long as it is computed linearly, the following should be okay.)
-		double tripDelayDisutilityOneSec = (1.0 / 3600.) * this.scenario.getConfig().planCalcScore().getModes().get(this.personId2currentTripMode.get(personId)).getMarginalUtilityOfTraveling() * (-1);
-		
-		// Translate the disutility into monetary units.
-		double delayCostPerSec_usingActivityDelayOneSec = (activityDelayDisutilityOneSec + tripDelayDisutilityOneSec) / this.scenario.getConfig().planCalcScore().getMarginalUtilityOfMoney();
-
-		// store the VTTS and mode for analysis purposes
-		if (this.personId2VTTSh.containsKey(personId)) {
-					
-			this.personId2VTTSh.get(personId).add(delayCostPerSec_usingActivityDelayOneSec * 3600);
-			this.personId2TripNr2VTTSh.get(personId).put(this.personId2currentTripNr.get(personId), delayCostPerSec_usingActivityDelayOneSec * 3600);
-			this.personId2TripNr2Mode.get(personId).put(this.personId2currentTripNr.get(personId), this.personId2currentTripMode.get(personId));
-	
-		} else {
-
-			List<Double> vTTSh = new ArrayList<>();
-			vTTSh.add(delayCostPerSec_usingActivityDelayOneSec * 3600.);
-			this.personId2VTTSh.put(personId, vTTSh);
-
-			Map<Integer, Double> tripNr2VTTSh = new HashMap<>();
-			tripNr2VTTSh.put(this.personId2currentTripNr.get(personId), delayCostPerSec_usingActivityDelayOneSec * 3600.);
-			this.personId2TripNr2VTTSh.put(personId, tripNr2VTTSh);
 			
-			Map<Integer, String> tripNr2Mode = new HashMap<>();
-			tripNr2Mode.put(this.personId2currentTripNr.get(personId), this.personId2currentTripMode.get(personId));
-			this.personId2TripNr2Mode.put(personId, tripNr2Mode);
+			// Calculate the agent's trip delay disutility.
+			// (Could be done similar to the activity delay disutility. As long as it is computed linearly, the following should be okay.)
+			double tripDelayDisutilityOneSec = (1.0 / 3600.) * this.scenario.getConfig().planCalcScore().getModes().get(this.personId2currentTripMode.get(personId)).getMarginalUtilityOfTraveling() * (-1);
+			
+			// Translate the disutility into monetary units.
+			double delayCostPerSec_usingActivityDelayOneSec = (activityDelayDisutilityOneSec + tripDelayDisutilityOneSec) / this.scenario.getConfig().planCalcScore().getMarginalUtilityOfMoney();
+
+			// store the VTTS and mode for analysis purposes
+			if (this.personId2VTTSh.containsKey(personId)) {
+						
+				this.personId2VTTSh.get(personId).add(delayCostPerSec_usingActivityDelayOneSec * 3600);
+				this.personId2TripNr2VTTSh.get(personId).put(this.personId2currentTripNr.get(personId), delayCostPerSec_usingActivityDelayOneSec * 3600);
+				this.personId2TripNr2Mode.get(personId).put(this.personId2currentTripNr.get(personId), this.personId2currentTripMode.get(personId));
+		
+			} else {
+
+				List<Double> vTTSh = new ArrayList<>();
+				vTTSh.add(delayCostPerSec_usingActivityDelayOneSec * 3600.);
+				this.personId2VTTSh.put(personId, vTTSh);
+
+				Map<Integer, Double> tripNr2VTTSh = new HashMap<>();
+				tripNr2VTTSh.put(this.personId2currentTripNr.get(personId), delayCostPerSec_usingActivityDelayOneSec * 3600.);
+				this.personId2TripNr2VTTSh.put(personId, tripNr2VTTSh);
+				
+				Map<Integer, String> tripNr2Mode = new HashMap<>();
+				tripNr2Mode.put(this.personId2currentTripNr.get(personId), this.personId2currentTripMode.get(personId));
+				this.personId2TripNr2Mode.put(personId, tripNr2Mode);
+			}
 		}
 	}
 
