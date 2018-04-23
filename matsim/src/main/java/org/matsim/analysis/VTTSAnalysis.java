@@ -207,9 +207,14 @@ ActivityStartEventHandler, ActivityEndEventHandler, PersonDepartureEventHandler,
 		} else {
 			double activityDelayDisutilityOneSec = 0.;
 			
+			String subpop = null;
+
+			if (this.scenario.getPopulation().getPersonAttributes().getAttribute(personId.toString(), this.scenario.getConfig().plans().getSubpopulationAttributeName()) != null) {					
+				subpop = (String) this.scenario.getPopulation().getPersonAttributes().getAttribute(personId.toString(), this.scenario.getConfig().plans().getSubpopulationAttributeName());
+			}
+			
 			final VTTSMarginalSumScoringFunction marginalSumScoringFunction = new VTTSMarginalSumScoringFunction(
-					new ScoringParameters.Builder(scenario.getConfig().planCalcScore(), scenario.getConfig().planCalcScore().getScoringParameters(null), scenario.getConfig().scenario()).build());
-			// TODO: account for different scoring parameters for different subpopulations
+					new ScoringParameters.Builder(scenario.getConfig().planCalcScore(), scenario.getConfig().planCalcScore().getScoringParameters(subpop), scenario.getConfig().scenario()).build());
 			
 			// First, check if the agent has arrived at an activity
 			if (this.personId2currentActivityType.containsKey(personId) && this.personId2currentActivityStartTime.containsKey(personId)) {
