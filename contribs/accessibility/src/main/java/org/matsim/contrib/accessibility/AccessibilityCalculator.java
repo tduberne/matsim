@@ -62,8 +62,13 @@ public final class AccessibilityCalculator {
 	private final ArrayList<FacilityDataExchangeInterface> zoneDataExchangeListeners = new ArrayList<>();
 	
 
-	public AccessibilityCalculator(Scenario scenario, ActivityFacilities measuringPoints) {
-		this.network = scenario.getNetwork();
+	public AccessibilityCalculator(Scenario scenario, ActivityFacilities measuringPoints,
+			//
+			Network network
+			//
+			) {
+//		this.network = scenario.getNetwork();
+		this.network = network;
 		this.measuringPoints = measuringPoints;
 		this.acg = ConfigUtils.addOrGetModule(scenario.getConfig(), AccessibilityConfigGroup.GROUP_NAME, AccessibilityConfigGroup.class);
 		this.cnScoringGroup = scenario.getConfig().planCalcScore();
@@ -172,7 +177,7 @@ public final class AccessibilityCalculator {
 	private final AggregationObject[] aggregateOpportunities(final ActivityFacilities opportunities, Network network) {
 		// yyyy this method ignores the "capacities" of the facilities. kai, mar'14
 		// for now, we decided not to add "capacities" as it is not needed for current projects. dz, feb'16
-
+		
 		LOG.info("Aggregating " + opportunities.getFacilities().size() + " opportunities with identical nearest node...");
 		Map<Id<Node>, AggregationObject> opportunityClusterMap = new ConcurrentHashMap<>();
 		ProgressBar progressBar = new ProgressBar(opportunities.getFacilities().size());
@@ -181,6 +186,7 @@ public final class AccessibilityCalculator {
 			progressBar.update();
 
 			Node nearestNode = NetworkUtils.getNearestNode(network, opportunity.getCoord());
+//			Node nearestNode = NetworkUtils.getNearestNode(carNetwork, opportunity.getCoord());
 			double distance_m = NetworkUtils.getEuclideanDistance(opportunity.getCoord(), nearestNode.getCoord());
 			
 			// in MATSim this is [utils/h]: cnScoringGroup.getTravelingWalk_utils_hr() - cnScoringGroup.getPerforming_utils_hr()
