@@ -111,6 +111,11 @@ public final class PConfigGroup extends ConfigGroup{
 	private static final String PMODULE_DISABLEINITERATION = "ModuleDisableInIteration_";
 	private static final String PMODULE_PARAMETER = "ModuleParameter_";
 	
+	private static final String PSCORING_MODULE = "Scoring_Module_";
+	private static final String PSCORING_MODULE_PROBABILITY = "Scoring_ModuleProbability_";
+	private static final String PSCORING_MODULE_DISABLEINITERATION = "Scoring_ModuleDisableInIteration_";
+	private static final String PSCORING_MODULE_PARAMETER = "Scoring_ModuleParameter_";
+	
 	private static final String SUBSIDY_APPROACH = "subsidyApproach";
 	
 	// Defaults
@@ -168,6 +173,9 @@ public final class PConfigGroup extends ConfigGroup{
 
 	// Strategies
 	private final LinkedHashMap<Id<PStrategySettings>, PStrategySettings> strategies = new LinkedHashMap<>();
+	
+	// Scoring functions (for route design/complexity)
+	private final LinkedHashMap<Id<PScoringSettings>, PScoringSettings> scoringFunctions = new LinkedHashMap<>();
 	
 	
 	public PConfigGroup(){
@@ -301,6 +309,18 @@ public final class PConfigGroup extends ConfigGroup{
 		} else if (key != null && key.startsWith(PMODULE_PARAMETER)) {
 			PStrategySettings settings = getStrategySettings(Id.create(key.substring(PMODULE_PARAMETER.length()), PStrategySettings.class), true);
 			settings.setParameters(value);
+		} else if (key != null && key.startsWith(PSCORING_MODULE)) {
+			PScoringSettings scoringFunctions = getScoringSettings(Id.create(key.substring(PSCORING_MODULE.length()), PScoringSettings.class), true);
+			scoringFunctions.setModuleName(value);
+		} else if (key != null && key.startsWith(PSCORING_MODULE_PROBABILITY)) {
+			PScoringSettings scoringFunctions = getScoringSettings(Id.create(key.substring(PSCORING_MODULE_PROBABILITY.length()), PScoringSettings.class), true);
+			scoringFunctions.setProbability(Double.parseDouble(value));
+		} else if (key != null && key.startsWith(PSCORING_MODULE_DISABLEINITERATION)) {
+			PScoringSettings scoringFunctions = getScoringSettings(Id.create(key.substring(PSCORING_MODULE_DISABLEINITERATION.length()), PScoringSettings.class), true);
+			scoringFunctions.setDisableInIteration(Integer.parseInt(value));
+		} else if (key != null && key.startsWith(PSCORING_MODULE_PARAMETER)) {
+			PScoringSettings scoringFunctions = getScoringSettings(Id.create(key.substring(PSCORING_MODULE_PARAMETER.length()), PScoringSettings.class), true);
+			scoringFunctions.setParameters(value);
 		} else if (SUBSIDY_APPROACH.equals(key)) {
 			this.subsidyApproach = value;
 		} else {
@@ -372,6 +392,13 @@ public final class PConfigGroup extends ConfigGroup{
 			map.put(PMODULE_PARAMETER + entry.getKey().toString(), entry.getValue().getParametersAsString());
 		}
 		
+		for (Entry<Id<PScoringSettings>, PScoringSettings> entry : this.scoringFunctions.entrySet()) {
+			map.put(PSCORING_MODULE + entry.getKey().toString(), entry.getValue().getModuleName());
+			map.put(PSCORING_MODULE_PROBABILITY + entry.getKey().toString(), Double.toString(entry.getValue().getProbability()));
+			map.put(PSCORING_MODULE_DISABLEINITERATION + entry.getKey().toString(), Integer.toString(entry.getValue().getDisableInIteration()));
+			map.put(PSCORING_MODULE_PARAMETER + entry.getKey().toString(), entry.getValue().getParametersAsString());
+		}
+		
 		return map;
 	}
 	
@@ -435,6 +462,13 @@ public final class PConfigGroup extends ConfigGroup{
 			map.put(PMODULE_PROBABILITY + entry.getKey().toString(), "probability that a strategy is applied to a given a plan. despite its name, this really is a ``weight''");
 			map.put(PMODULE_DISABLEINITERATION + entry.getKey().toString(), "removes the strategy from the choice set at the beginning of the given iteration");
 			map.put(PMODULE_PARAMETER + entry.getKey().toString(), "parameters of the strategy");
+		}
+		
+		for (Entry<Id<PScoringSettings>, PScoringSettings>  entry : this.scoringFunctions.entrySet()) {
+			map.put(PSCORING_MODULE + entry.getKey().toString(), "name of strategy");
+			map.put(PSCORING_MODULE_PROBABILITY + entry.getKey().toString(), "probability that a strategy is applied to a given a plan. despite its name, this really is a ``weight''");
+			map.put(PSCORING_MODULE_DISABLEINITERATION + entry.getKey().toString(), "removes the strategy from the choice set at the beginning of the given iteration");
+			map.put(PSCORING_MODULE_PARAMETER + entry.getKey().toString(), "parameters of the strategy");
 		}
 
 		return map;
@@ -667,6 +701,19 @@ public final class PConfigGroup extends ConfigGroup{
 		return settings;
 	}
 	
+	public Collection<PScoringSettings> getScoringSettings() {
+		return this.scoringFunctions.values();
+	}
+	
+	private PScoringSettings getScoringSettings(final Id<PScoringSettings> strategyId, final boolean createIfMissing) {
+		PScoringSettings settings = this.scoringFunctions.get(strategyId);
+		if (settings == null && createIfMissing) {
+			settings = new PScoringSettings(strategyId);
+			this.scoringFunctions.put(strategyId, settings);
+		}
+		return settings;
+	}
+	
 	public static class PStrategySettings{
 		private Id<PStrategySettings> id;
 		private double probability = -1.0;
@@ -747,6 +794,88 @@ public final class PConfigGroup extends ConfigGroup{
 		}
 
 	}
+	
+	public static class PScoringSettings{
+		private Id<PScoringSettings> id;
+		private double probability = -1.0;
+		private int disableInIteration = -1;
+		private String moduleName = null;
+		private String[] parameters = null;
+
+		public PScoringSettings(final Id<PScoringSettings> id) {
+			this.id = id;
+		}
+
+		public void setProbability(final double probability) {
+			this.probability = probability;
+		}
+
+		public double getProbability() {
+			return this.probability;
+		}
+
+		public void setDisableInIteration(int disableInIteration) {
+			this.disableInIteration = disableInIteration;
+		}
+		
+		public int getDisableInIteration() {
+			return this.disableInIteration;
+		}
+
+		public void setModuleName(final String moduleName) {
+			this.moduleName = moduleName;
+		}
+
+		public String getModuleName() {
+			return this.moduleName;
+		}		
+
+		public Id<PScoringSettings> getId() {
+			return this.id;
+		}
+
+		public void setId(final Id<PScoringSettings> id) {
+			this.id = id;
+		}
+		
+		public ArrayList<String> getParametersAsArrayList(){
+			ArrayList<String> list = new ArrayList<>();
+			
+			if (this.parameters != null) {
+				for (String parameter : this.parameters) {
+					list.add(parameter);
+				}
+			}
+			
+			return list;
+		}
+		
+		public String getParametersAsString() {
+			StringBuffer strBuffer = new StringBuffer();
+			
+			if (this.parameters != null) {
+		        strBuffer.append(this.parameters[0]);
+		        for (int i = 1; i < this.parameters.length; i++) {
+		            strBuffer.append(",");
+		            strBuffer.append(this.parameters[i]);
+		        }
+		    }
+			
+			return strBuffer.toString();
+		}
+
+		public void setParameters(String parameter) {
+			if (!parameter.equalsIgnoreCase("")) {
+				String[] parts = StringUtils.explode(parameter, ',');
+				this.parameters = new String[parts.length];
+				for (int i = 0, n = parts.length; i < n; i++) {
+					this.parameters[i] = parts[i].trim().intern();
+				}
+			}			
+		}
+
+	}
+	
 	@Override
 	protected void checkConsistency( Config config ) {
 		
