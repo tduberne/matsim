@@ -29,15 +29,15 @@ import org.matsim.core.controler.OutputDirectoryHierarchy;
  *
  * @author mrieser
  */
-public class Controler {
+public class MATSim {
 
 	private final org.matsim.core.controler.Controler controler;
 	
-	public Controler(final String[] args) {
+	public MATSim(final String[] args) {
 		this.controler = new org.matsim.core.controler.Controler(args);
 	}
 	
-	public Controler(final String configFilename) {
+	public MATSim(final String configFilename) {
 		this.controler = new org.matsim.core.controler.Controler(configFilename);
 	}
 	
@@ -57,6 +57,6 @@ public class Controler {
 	}
 	
 	public  static void main(String[] args) {
-		new Controler(args).run();
+		new MATSim(args).run();
 	}
 }

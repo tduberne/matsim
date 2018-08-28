@@ -5,7 +5,7 @@ import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.ConfigWriter;
 import org.matsim.core.gbl.Gbl;
 import org.matsim.core.utils.io.IOUtils;
-import org.matsim.run.Controler;
+import org.matsim.run.MATSim;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -541,7 +541,7 @@ public class Gui extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		Gui gui = Gui.show("MATSim", Controler.class);
+		Gui gui = Gui.show("MATSim", MATSim.class);
 		if (args.length > 0) {
 			File configFile = new File(args[0]);
 			if (configFile.exists()) {
