@@ -36,17 +36,19 @@ import org.matsim.utils.objectattributes.attributable.Attributable;
  */
 public interface Plan extends MatsimPopulationObject, Customizable, BasicPlan, Attributable {
 	
-	public abstract List<PlanElement> getPlanElements();
+	List<PlanElement> getPlanElements();
 
-	public abstract void addLeg(final Leg leg);
+	void addLeg(final Leg leg);
 
-	public abstract void addActivity(final Activity act);
+	void addActivity(final Activity act);
 
-	public abstract String getType();
+	void addWaypoint(final Waypoint waypoint);
 
-	public abstract void setType(final String type);
+	String getType();
 
-	public abstract Person getPerson();
+	void setType(final String type);
+
+	Person getPerson();
 
 	/**
 	 * Sets the reference to the person.
@@ -54,6 +56,6 @@ public interface Plan extends MatsimPopulationObject, Customizable, BasicPlan, A
 	 * sure that the bidirectional reference is set correctly if
 	 * you are using this method!.
 	 */
-	public abstract void setPerson(Person person);
+	void setPerson(Person person);
 
 }

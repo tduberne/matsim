@@ -26,11 +26,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Customizable;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.scenario.CustomizableUtils;
 import org.matsim.utils.objectattributes.attributable.Attributes;
 
@@ -133,6 +129,11 @@ import org.matsim.utils.objectattributes.attributable.Attributes;
 	@Override
 	public final void addActivity(final Activity act) {
 		this.actsLegs.add(act);
+	}
+
+	@Override
+	public final void addWaypoint(final Waypoint w) {
+		this.actsLegs.add(w);
 	}
 
 	@Override
