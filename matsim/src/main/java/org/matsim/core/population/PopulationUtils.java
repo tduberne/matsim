@@ -479,7 +479,7 @@ public final class PopulationUtils {
 	 *
 	 */
 	public static List<Activity> getActivities( Plan plan, StageActivityTypes stageActivities ) {
-		return TripStructureUtils.getActivities(plan, stageActivities ) ;
+		return TripStructureUtils.getActivities(plan);
 	}
 
 	/**

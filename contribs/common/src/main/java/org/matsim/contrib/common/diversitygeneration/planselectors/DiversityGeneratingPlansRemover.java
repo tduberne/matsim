@@ -25,14 +25,12 @@ import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Leg;
 import org.matsim.api.core.v01.population.Person;
 import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.replanning.selectors.AbstractPlanSelector;
 import org.matsim.core.replanning.selectors.PlanSelector;
 import org.matsim.core.router.StageActivityTypes;
 import org.matsim.core.router.TripRouter;
 import org.matsim.core.router.TripStructureUtils;
-import org.matsim.pt.PtConstants;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -236,8 +234,8 @@ public final class DiversityGeneratingPlansRemover extends AbstractPlanSelector 
 	/* package-private, for testing */ double similarity( Plan plan1, Plan plan2 ) {
 		double simil = 0. ;
 		{
-			List<Activity> activities1 = TripStructureUtils.getActivities(plan1, stageActivities) ;
-			List<Activity> activities2 = TripStructureUtils.getActivities(plan2, stageActivities) ;
+			List<Activity> activities1 = TripStructureUtils.getActivities(plan1);
+			List<Activity> activities2 = TripStructureUtils.getActivities(plan2);
 			simil += PopulationUtils.calculateSimilarity(activities1, activities2, actTypeWeight, locationWeight, actTimeWeight ) ;
 			if ( Double.isNaN(simil) ) {
 				log.warn("simil is NaN; id: " + plan1.getPerson().getId() ) ;

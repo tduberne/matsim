@@ -110,7 +110,7 @@ public class TourModeUnifierAlgorithmTest {
 		plan.addActivity( PopulationUtils.createActivityFromLinkId("h", anchorLink1) );
 
 		final StageActivityTypes types = new StageActivityTypesImpl( stageType );
-		final int nActs = TripStructureUtils.getActivities( plan , types ).size();
+		final int nActs = TripStructureUtils.getActivities(plan).size();
 
 		final PlanAlgorithm testee =
 			new TourModeUnifierAlgorithm(
@@ -267,7 +267,7 @@ public class TourModeUnifierAlgorithmTest {
 		plan.addActivity( PopulationUtils.createActivityFromLinkId("h", anchorLink) );
 
 		final StageActivityTypes types = new StageActivityTypesImpl( stageType );
-		final int nActs = TripStructureUtils.getActivities( plan , types ).size();
+		final int nActs = TripStructureUtils.getActivities(plan).size();
 
 		final PlanAlgorithm testee =
 			new TourModeUnifierAlgorithm( 

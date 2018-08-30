@@ -21,7 +21,6 @@ package org.matsim.contrib.socnetsim.framework.replanning.modules;
 
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Plan;
 import org.matsim.core.population.algorithms.PlanAlgorithm;
 import org.matsim.core.router.StageActivityTypes;
@@ -63,7 +62,7 @@ public class BlackListedTimeAllocationMutator implements PlanAlgorithm {
 
 	@Override
 	public void run(final Plan plan) {
-		final List<Activity> activities = TripStructureUtils.getActivities( plan , blackList );
+		final List<Activity> activities = TripStructureUtils.getActivities(plan);
 		final int nActs = activities.size();
 		// when mutating durations "blindly", avoid creating activities ending before
 		// the previous activity.

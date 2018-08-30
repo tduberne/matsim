@@ -177,7 +177,7 @@ public class RandomJointLocationChoiceAlgorithm implements GenericPlanAlgorithm<
 			final Collection<Plan> plans) {
 		final AgentAndTypeActivityMap actsPerType = new AgentAndTypeActivityMap();
 		for ( Plan p : plans ) {
-			for ( Activity act : TripStructureUtils.getActivities( p , activityFilter ) ) {
+			for ( Activity act : TripStructureUtils.getActivities(p)) {
 				actsPerType.addActivity( p.getPerson().getId() , act );
 			}
 		}

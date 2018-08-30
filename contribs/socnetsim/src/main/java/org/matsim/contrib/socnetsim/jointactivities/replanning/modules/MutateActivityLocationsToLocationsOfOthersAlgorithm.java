@@ -33,7 +33,6 @@ import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Identifiable;
 import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Person;
 import org.matsim.api.core.v01.population.Plan;
 import org.matsim.api.core.v01.population.Population;
@@ -65,7 +64,7 @@ public class MutateActivityLocationsToLocationsOfOthersAlgorithm implements Gene
 	public void run(final GroupPlans plans) {
 		final List<Facility> groupChoiceSet = choiceSet.getGroupChoiceSet( plans );
 		for ( Plan plan : plans.getAllIndividualPlans() ) {
-			for ( Activity act : TripStructureUtils.getActivities( plan , choiceSet.filter ) ) {
+			for ( Activity act : TripStructureUtils.getActivities(plan)) {
 				assert act.getType().equals( choiceSet.type );
 				final Facility choice = groupChoiceSet.get( random.nextInt( groupChoiceSet.size() ) );
 				((Activity) act).setCoord( choice.getCoord() );
@@ -153,7 +152,7 @@ public class MutateActivityLocationsToLocationsOfOthersAlgorithm implements Gene
 				final Set<Facility> facilities = new HashSet<Facility>();
 				map.put( person.getId() , facilities );
 				for ( Plan plan : person.getPlans() ) {
-					for ( Activity act : TripStructureUtils.getActivities( plan , filter ) ) {
+					for ( Activity act : TripStructureUtils.getActivities(plan)) {
 						assert act.getType().equals( type );
 						facilities.add(
 								pool.getPooledInstance( new BasicFacility( act ) ) );

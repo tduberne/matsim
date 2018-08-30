@@ -106,7 +106,7 @@ public class JoinableActivitiesPlanLinkIdentifier implements PlanLinkIdentifier 
 		final Id personId = plan.getPerson().getId();
 		double lastEnd = 0;
 		int ind = 0;
-		for ( Activity act : TripStructureUtils.getActivities( plan , stages ) ) {
+		for ( Activity act : TripStructureUtils.getActivities(plan)) {
 			final Id loc = act.getFacilityId();
 
 			final LocationEvent event =

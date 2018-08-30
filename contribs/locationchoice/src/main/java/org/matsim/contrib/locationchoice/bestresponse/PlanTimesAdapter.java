@@ -33,10 +33,7 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.groups.PlansCalcRouteConfigGroup;
 import org.matsim.core.config.groups.PlansConfigGroup;
 import org.matsim.core.population.PopulationUtils;
-import org.matsim.core.router.ActivityWrapperFacility;
-import org.matsim.core.router.EmptyStageActivityTypes;
-import org.matsim.core.router.TripRouter;
-import org.matsim.core.router.TripStructureUtils;
+import org.matsim.core.router.*;
 import org.matsim.core.scoring.ScoringFunction;
 import org.matsim.core.scoring.ScoringFunctionFactory;
 import org.matsim.core.utils.misc.Time;
@@ -103,7 +100,7 @@ public class PlanTimesAdapter {
 
 		// iterate through plan and adapt travel and activity times
 		boolean isFirstActivity = true;
-		for ( Activity act : TripStructureUtils.getActivities( plan , EmptyStageActivityTypes.INSTANCE ) ) {
+		for ( Activity act : TripStructureUtils.getActivities(plan)) {
 			final int planElementIndex = plan.getPlanElements().indexOf( act );
 			if ( isFirstActivity ) {
 				isFirstActivity = false;

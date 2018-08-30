@@ -69,7 +69,7 @@ public final class PlanMutateTimeAllocationSimplified implements PlanAlgorithm {
 
 	@Override
 	public void run(final Plan plan) {
-		for ( Activity act : TripStructureUtils.getActivities( plan , blackList ) ) {
+		for ( Activity act : TripStructureUtils.getActivities(plan)) {
 			// this is deliberately simplistic.  Cleanup up of the time information should be done somewhere else.
 			if (act.getEndTime() != Time.UNDEFINED_TIME) {
 				act.setEndTime(mutateTime(act.getEndTime()));

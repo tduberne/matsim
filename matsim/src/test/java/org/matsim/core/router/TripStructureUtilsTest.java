@@ -34,7 +34,6 @@ import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
 import org.matsim.api.core.v01.population.Plan;
 import org.matsim.api.core.v01.population.PlanElement;
 import org.matsim.api.core.v01.population.PopulationFactory;
@@ -329,9 +328,7 @@ public class TripStructureUtilsTest {
 	public void testActivities() throws Exception {
 		for (Fixture fixture : fixtures) {
 			final List<Activity> acts =
-				TripStructureUtils.getActivities(
-						fixture.plan,
-						null);
+					TripStructureUtils.getActivities(fixture.plan);
 
 			assertEquals(
 					"unexpected number of activities in "+acts+" for fixture "+fixture.name,

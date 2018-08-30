@@ -46,7 +46,7 @@ public class ActivitySequenceMutatorAlgorithm implements PlanAlgorithm {
 
 	@Override
 	public void run(final Plan plan) {
-		final List<Activity> activities = TripStructureUtils.getActivities( plan , stageTypes );
+		final List<Activity> activities = TripStructureUtils.getActivities(plan);
 		// we need at least two activities in addition to the first/last
 		if ( activities.size() < 4 ) return;
 

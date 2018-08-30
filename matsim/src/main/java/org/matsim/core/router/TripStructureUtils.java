@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Leg;
@@ -67,30 +69,16 @@ public class TripStructureUtils {
 		return Collections.unmodifiableList( legs );
 	}
 
-	public static List<Activity> getActivities(
-			final Plan plan,
-			final StageActivityTypes stageActivities) {
-		return getActivities(
-				plan.getPlanElements(),
-				stageActivities);
+	public static List<Activity> getActivities(Plan plan) {
+		return getActivities(plan.getPlanElements());
 	}
 
 	public static List<Activity> getActivities(
-			final List<? extends PlanElement> planElements,
-			final StageActivityTypes stageActivities) {
-		final List<Activity> activities = new ArrayList<>();
-
-		for (PlanElement pe : planElements) {
-			if ( !(pe instanceof Activity) ) continue;
-			final Activity act = (Activity) pe;
-
-			if ( stageActivities == null || !stageActivities.isStageActivity( act.getType() ) ) {
-				activities.add( act );
-			}
-		}
-
-		// it is not backed to the plan: fail if try to modify
-		return Collections.unmodifiableList( activities );
+			final List<? extends PlanElement> planElements) {
+		return planElements.stream()
+				.filter(pe -> pe instanceof Activity)
+				.map(pe -> (Activity) pe)
+				.collect(Collectors.toList());
 	}
 
 	public static List<Trip> getTrips(

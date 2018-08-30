@@ -129,7 +129,7 @@ public class Grid {
 		StageActivityTypes stages = new StageActivityTypesImpl(PtConstants.TRANSIT_ACTIVITY_TYPE);
 		for (Person person: scenario.getPopulation().getPersons().values()) {
 
-			for(Activity activity: TripStructureUtils.getActivities(person.getSelectedPlan(), stages)){
+			for(Activity activity: TripStructureUtils.getActivities(person.getSelectedPlan())){
 				if (this.consideredActivitiesForSpatialFunctionality.contains(activity.getType()) || consideredActivityPrefix(activity.getType(), this.consideredActivitiesForSpatialFunctionality)) {
 					List<Coord> activityCoordinates = personId2consideredActivityCoords.get(person.getId());//new ArrayList<Coord>();
 					
