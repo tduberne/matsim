@@ -19,28 +19,22 @@
  * *********************************************************************** */
 package org.matsim.population.algorithms;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.population.algorithms.TripsToLegsAlgorithm;
+import org.matsim.core.router.EmptyStageActivityTypes;
 import org.matsim.core.router.MainModeIdentifierImpl;
-import org.matsim.core.router.StageActivityTypes;
-import org.matsim.core.router.StageActivityTypesImpl;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author thibautd
@@ -60,9 +54,6 @@ public class TripsToLegsAlgorithmTest {
 			this.expectedPlanStructure = structure;
 		}
 	}
-
-	private static final String DUMMY_1 = "dummy_1";
-	private static final String DUMMY_2 = "dummy_2";
 
 	@Test
 	public void testMonoLegPlan() throws Exception {
@@ -153,8 +144,8 @@ public class TripsToLegsAlgorithmTest {
 		plan.addLeg( leg );
 		structure.add( leg );
 
-		act = PopulationUtils.createActivityFromLinkId(DUMMY_1, id3);
-		plan.addActivity( act );
+		Waypoint waypoint = PopulationUtils.createWaypoint(null, id3);
+		plan.addWaypoint( waypoint );
 
 		leg = PopulationUtils.createLeg("mode_1bis");
 		plan.addLeg( leg );
@@ -167,8 +158,8 @@ public class TripsToLegsAlgorithmTest {
 		plan.addLeg( leg );
 		structure.add( leg );
 
-		act = PopulationUtils.createActivityFromLinkId(DUMMY_2, id3);
-		plan.addActivity( act );
+		waypoint = PopulationUtils.createWaypoint(null, id3);
+		plan.addWaypoint( waypoint );
 
 		leg = PopulationUtils.createLeg("mode_2bis");
 		plan.addLeg( leg );
@@ -200,8 +191,8 @@ public class TripsToLegsAlgorithmTest {
 		Leg leg = PopulationUtils.createLeg(TransportMode.transit_walk);
 		plan.addLeg( leg );
 
-		act = PopulationUtils.createActivityFromLinkId(DUMMY_1, id3);
-		plan.addActivity( act );
+		Waypoint waypoint = PopulationUtils.createWaypoint(null, id3);
+		plan.addWaypoint( waypoint );
 
 		leg = PopulationUtils.createLeg(TransportMode.pt);
 		plan.addLeg( leg );
@@ -219,8 +210,8 @@ public class TripsToLegsAlgorithmTest {
 		plan.addLeg( leg );
 		structure.add( PopulationUtils.createLeg(TransportMode.pt) );
 
-		act = PopulationUtils.createActivityFromLinkId(DUMMY_2, id3);
-		plan.addActivity( act );
+		waypoint = PopulationUtils.createWaypoint(null, id3);
+		plan.addWaypoint( waypoint );
 
 		leg = PopulationUtils.createLeg("mode_2bis");
 		plan.addLeg( leg );
@@ -237,13 +228,8 @@ public class TripsToLegsAlgorithmTest {
 	}
 
 	private static void performTest(final Fixture fixture) {
-		final StageActivityTypes types =
-			new StageActivityTypesImpl(
-					Arrays.asList(
-						DUMMY_1,
-						DUMMY_2 ));
 
-		final TripsToLegsAlgorithm algorithm = new TripsToLegsAlgorithm( types , new MainModeIdentifierImpl() );
+		final TripsToLegsAlgorithm algorithm = new TripsToLegsAlgorithm(EmptyStageActivityTypes.INSTANCE, new MainModeIdentifierImpl() );
 		algorithm.run( fixture.plan );
 
 		assertEquals(
