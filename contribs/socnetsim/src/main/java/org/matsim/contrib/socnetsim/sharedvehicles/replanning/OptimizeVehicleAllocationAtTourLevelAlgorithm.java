@@ -183,10 +183,7 @@ public class OptimizeVehicleAllocationAtTourLevelAlgorithm implements GenericPla
 
 		for ( final Plan p : plans.getAllIndividualPlans() ) {
 			final Collection<Subtour> subtours =
-				TripStructureUtils.getSubtours(
-						p,
-						stageActs
-                );
+					TripStructureUtils.getSubtours(p);
 			for ( final Subtour s : subtours ) {
 				if ( s.getParent() != null ) continue; // is not a root tour
 				boolean isFirstTrip = true;

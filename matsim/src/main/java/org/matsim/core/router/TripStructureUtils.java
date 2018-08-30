@@ -121,14 +121,10 @@ public class TripStructureUtils {
 		return Collections.unmodifiableList( trips );
 	}
 
-	public static Collection<Subtour> getSubtours(
-            final Plan plan,
-            final StageActivityTypes stageActivityTypes) {
-		return getSubtours(
-				plan.getPlanElements(),
-				stageActivityTypes
-        );
+	public static Collection<Subtour> getSubtours(final Plan plan) {
+		return getSubtours(plan.getPlanElements());
 	}
+
 
 	/**
 	 * Gives access to a list of the subtours in the plan.
@@ -159,8 +155,7 @@ public class TripStructureUtils {
 	 * sequence
 	 */
 	public static Collection<Subtour> getSubtours(
-            final List<? extends PlanElement> planElements,
-            final StageActivityTypes stageActivityTypes) {
+            final List<? extends PlanElement> planElements) {
 		final List<Subtour> subtours = new ArrayList<>();
 
 		Id<?> destinationId = null;
