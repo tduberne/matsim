@@ -266,7 +266,7 @@ public final class EditTrips {
 	}
 	
 	public Trip findTripAfterActivity( Plan plan, Activity activity ) {
-		return TripStructureUtils.findTripStartingAtActivity( activity, plan, tripRouter.getStageActivityTypes() ) ;
+		return TripStructureUtils.findTripStartingAtActivity( activity, plan) ;
 	}
 
 }

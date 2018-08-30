@@ -30,7 +30,6 @@ import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Leg;
 import org.matsim.api.core.v01.population.Plan;
 import org.matsim.api.core.v01.population.PlanElement;
-import org.matsim.core.gbl.Gbl;
 
 /**
  * Helps to work on plans with complex trips.
@@ -262,7 +261,41 @@ public class TripStructureUtils {
 		Leg leg = (Leg) trip.getTripElements().get(0);
 		return leg.getDepartureTime();
 	}
-	
+
+	public static Trip findCurrentTrip(PlanElement currentPlanElement, Plan plan) {
+		if ( currentPlanElement instanceof Activity ) {
+			throw new RuntimeException("activities are not valid parts of a trip");
+		}
+		List<Trip> trips = getTrips(plan.getPlanElements());
+		for ( Trip trip : trips ) {
+			int index = trip.getTripElements().indexOf( currentPlanElement ) ;
+			if ( index != -1 ) {
+				return trip ;
+			}
+		}
+		return null ;
+	}
+
+	public static Trip findTripEndingAtActivity(Activity activity, Plan plan) {
+		List<Trip> trips = getTrips(plan.getPlanElements());
+		for ( Trip trip : trips ) {
+			if ( activity.equals( trip.getDestinationActivity() ) ) {
+				return trip;
+			}
+		}
+		return null ;
+	}
+
+	public static Trip findTripStartingAtActivity(final Activity activity, final Plan plan) {
+		List<Trip> trips = getTrips(plan);
+		for ( Trip trip : trips ) {
+			if ( trip.getOriginActivity().equals( activity ) ) {
+				return trip ;
+			}
+		}
+		return null ;
+	}
+
 	/**
 	 * Represents a trip, that is, the longest sequence of
 	 * {@link PlanElement}s consisting only of legs and "dummy"
@@ -437,40 +470,5 @@ public class TripStructureUtils {
 			return "Subtour: "+trips.toString();
 		}
 	}
-	public static Trip findCurrentTrip( PlanElement currentPlanElement, Plan plan, StageActivityTypes stageActivities ) {
-		if ( currentPlanElement instanceof Activity ) {
-			Gbl.assertIf( stageActivities.isStageActivity( ((Activity)currentPlanElement).getType() ) ) ;
-		}
-		List<Trip> trips = getTrips(plan.getPlanElements());
-		for ( Trip trip : trips ) {
-			int index = trip.getTripElements().indexOf( currentPlanElement ) ;
-			if ( index != -1 ) {
-				return trip ;
-			}
-		}
-		return null ;
-	}
-	public static Trip findTripEndingAtActivity(Activity activity, Plan plan, StageActivityTypes stageActivities ) {
-		Gbl.assertIf( ! stageActivities.isStageActivity( activity.getType()) ) ;
-		List<Trip> trips = getTrips(plan.getPlanElements());
-		for ( Trip trip : trips ) {
-			if ( activity.equals( trip.getDestinationActivity() ) ) {
-				return trip;
-			}
-		}
-		return null ;
-	}
-	public static Trip findTripStartingAtActivity( final Activity activity, final Plan plan, StageActivityTypes stageActivities ) {
-		Gbl.assertIf( ! stageActivities.isStageActivity( activity.getType()) ) ;
-		List<Trip> trips = getTrips(plan);
-		for ( Trip trip : trips ) {
-			if ( trip.getOriginActivity().equals( activity ) ) {
-				return trip ;
-			}
-		}
-		return null ;
-	}
-
-
 }
 
