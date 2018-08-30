@@ -341,9 +341,7 @@ public class TripStructureUtilsTest {
 	public void testTrips() throws Exception {
 		for (Fixture fixture : fixtures) {
 			final List<Trip> trips =
-				TripStructureUtils.getTrips(
-						fixture.plan, 
-						null);
+					TripStructureUtils.getTrips(fixture.plan);
 
 			assertEquals(
 					"unexpected number of trips in "+trips+" for fixture "+fixture.name,
@@ -378,9 +376,7 @@ public class TripStructureUtilsTest {
 	public void testLegs() throws Exception {
 		for (Fixture fixture : fixtures) {
 			final List<Trip> trips =
-				TripStructureUtils.getTrips(
-						fixture.plan, 
-						null);
+					TripStructureUtils.getTrips(fixture.plan);
 
 			int countLegs = 0;
 			for (Trip trip : trips) {

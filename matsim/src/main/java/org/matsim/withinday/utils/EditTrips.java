@@ -54,7 +54,7 @@ public final class EditTrips {
 	}
 	public Trip findTripAtPlanElement(MobsimAgent agent, PlanElement pe) {
 		log.debug("plan element to be found=" + pe ) ;
-		List<Trip> trips = TripStructureUtils.getTrips( WithinDayAgentUtils.getModifiablePlan(agent), tripRouter.getStageActivityTypes() ) ;
+		List<Trip> trips = TripStructureUtils.getTrips(WithinDayAgentUtils.getModifiablePlan(agent));
 		for ( Trip trip : trips ) {
 			for ( PlanElement te : trip.getTripElements() ) {
 				log.debug("trip element to be compared with=" + te ) ;
@@ -158,7 +158,7 @@ public final class EditTrips {
 		// yyyy I wonder what this will do if we are already at the egress stage.  kai, oct'17
 		
 		List<PlanElement> subTripPlanElements = tripElements.subList(tripElementsIndex,tripElements.size()-1) ;
-		Trip subTrip = TripStructureUtils.getTrips(subTripPlanElements, tripRouter.getStageActivityTypes()).get(0) ;
+		Trip subTrip = TripStructureUtils.getTrips(subTripPlanElements).get(0) ;
 		final double dpTime = agent.getActivityEndTime() ;
 		this.replanFutureTrip(subTrip, WithinDayAgentUtils.getModifiablePlan(agent), mainMode, dpTime ) ;
 	}

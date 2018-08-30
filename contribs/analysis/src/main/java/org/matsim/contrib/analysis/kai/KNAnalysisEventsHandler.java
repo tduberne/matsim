@@ -426,7 +426,7 @@ VehicleEntersTrafficEventHandler, VehicleLeavesTrafficEventHandler {
 				}
 			}
 			{
-				for ( Trip trip : TripStructureUtils.getTrips(selectedPlan, stageActivities ) ) {
+				for ( Trip trip : TripStructureUtils.getTrips(selectedPlan)) {
 					String mainMode = mainModeIdentifier.identifyMainMode( trip.getTripElements() ) ;
 					Double item = calcBeelineDistance(trip.getOriginActivity(), trip.getDestinationActivity()) ;
 

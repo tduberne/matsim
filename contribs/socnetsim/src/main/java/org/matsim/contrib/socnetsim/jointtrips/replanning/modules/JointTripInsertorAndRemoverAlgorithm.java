@@ -105,7 +105,7 @@ public class JointTripInsertorAndRemoverAlgorithm implements GenericPlanAlgorith
 			// parse trips, and count "egoists" (non-driver non-passenger) and
 			// passengers. Some care is needed: joint trips are not identified as
 			// trips by the router!
-			for ( Trip trip : TripStructureUtils.getTrips( indivPlan , stageTypes ) ) {
+			for ( Trip trip : TripStructureUtils.getTrips(indivPlan)) {
 				if ( tripContainsOneOfThoseModes( trip , Collections.singleton( JointActingTypes.PASSENGER ) ) ) countPassengers++;
 				if ( !tripContainsOneOfThoseModes( trip , JointActingTypes.JOINT_MODES ) ) countEgoists++;
 			}

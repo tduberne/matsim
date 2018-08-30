@@ -150,12 +150,12 @@ public final class ChooseRandomLegModeForSubtour implements PlanAlgorithm {
 
 		Collection<String> permissibleModesForThisPlan = permissibleModesCalculator.getPermissibleModes(plan);
 		// (modes that agent can in principle use; e.g. cannot use car sharing if not member)
-		
-			
+
+
 		List<Candidate> choiceSet =
 					determineChoiceSet(
 							homeLocation,
-							TripStructureUtils.getTrips(plan, stageActivityTypes),
+							TripStructureUtils.getTrips(plan),
 							TripStructureUtils.getSubtours(
 									plan,
 									stageActivityTypes

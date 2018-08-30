@@ -142,7 +142,7 @@ public class JointTripRemoverAlgorithm implements GenericPlanAlgorithm<JointPlan
 			final Plan plan,
 			final Leg leg,
 			final StageActivityTypes stages) {
-		for ( Trip t : TripStructureUtils.getTrips( plan , stages ) ) {
+		for ( Trip t : TripStructureUtils.getTrips(plan)) {
 			if ( t.getTripElements().contains( leg ) ) return t;
 		}
 		throw new RuntimeException( plan.getPlanElements() +" doesn't contain "+leg );
@@ -218,7 +218,7 @@ public class JointTripRemoverAlgorithm implements GenericPlanAlgorithm<JointPlan
 		elements.add( driverTrip.getOriginActivity() );
 		elements.addAll( driverTrip.getTripElements() );
 		elements.add( driverTrip.getDestinationActivity() );
-		return TripStructureUtils.getTrips( elements , stages );
+		return TripStructureUtils.getTrips(elements);
 	}
 
 	private static void unregisterPassengerFromDriverRoutes(

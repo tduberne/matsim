@@ -31,16 +31,12 @@ import java.util.Random;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Leg;
 import org.matsim.api.core.v01.population.Person;
 import org.matsim.api.core.v01.population.Plan;
 import org.matsim.api.core.v01.population.PlanElement;
 import org.matsim.core.population.PopulationUtils;
-import org.matsim.core.router.CompositeStageActivityTypes;
-import org.matsim.core.router.MainModeIdentifier;
-import org.matsim.core.router.TripRouter;
-import org.matsim.core.router.TripStructureUtils;
+import org.matsim.core.router.*;
 import org.matsim.core.utils.geometry.CoordUtils;
 import org.matsim.core.utils.misc.Time;
 
@@ -125,7 +121,7 @@ public class JointTripInsertorAlgorithm implements GenericPlanAlgorithm<JointPla
 				new JointMainModeIdentifier(
 						router.getMainModeIdentifier() );
 
-			for ( TripStructureUtils.Trip trip : TripStructureUtils.getTrips( plan , types ) ) {
+			for ( TripStructureUtils.Trip trip : TripStructureUtils.getTrips(plan)) {
 				final String mode = mainModeIdentifier.identifyMainMode( trip.getTripElements() );
 
 				if ( mode.equals( TransportMode.car ) ) {

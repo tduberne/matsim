@@ -31,7 +31,6 @@ import java.util.Random;
 import java.util.Set;
 
 import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Activity;
 import org.matsim.api.core.v01.population.Plan;
 import org.matsim.core.gbl.MatsimRandom;
 import org.matsim.core.router.StageActivityTypes;
@@ -240,7 +239,7 @@ public class PrismicLocationChoiceAlgorithm implements GenericPlanAlgorithm<Grou
 		final List<Subchain> potentialSubchains = new ArrayList<Subchain>();
 
 		Trip accessTrip = null;
-		for ( Trip trip : TripStructureUtils.getTrips( plan , stages ) ) {
+		for ( Trip trip : TripStructureUtils.getTrips(plan)) {
 			if ( accessTrip != null ) {
 				assert accessTrip.getDestinationActivity() == trip.getOriginActivity() : accessTrip.getDestinationActivity()+" != "+trip.getOriginActivity();
 				potentialSubchains.add(

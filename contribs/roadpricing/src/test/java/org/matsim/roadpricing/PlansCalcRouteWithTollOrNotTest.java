@@ -219,7 +219,7 @@ public class PlansCalcRouteWithTollOrNotTest {
 					}
 				}
 			} ;
-			List<Trip> trips = TripStructureUtils.getTrips(planElements, adHocTypes) ;
+			List<Trip> trips = TripStructureUtils.getTrips(planElements);
 			List<Leg> legs = trips.get(1).getLegsOnly() ;
 			if ( legs.size()==1 ) {
 				return legs.get(0) ;
