@@ -21,11 +21,15 @@
 package org.matsim.core.population.io;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Scenario;
+import org.matsim.api.core.v01.population.*;
+import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.population.io.StreamingPopulationReader.StreamingPopulation;
 import org.matsim.core.scenario.ProjectionUtils;
 import org.matsim.core.utils.geometry.CoordinateTransformation;
@@ -164,8 +168,44 @@ public final class PopulationReader extends MatsimXmlParser {
 		} catch (SAXException e) {
 		    throw new RuntimeException(e);
 		}
+
+		// Take some actions on the population after it is completely read:
+	    // - write the target CRS (as handlers for formats without attributes are not able to set it)
+	    // - convert "interaction" activities to waypoints for backward compatibility
 		if (targetCRS != null) {
 			ProjectionUtils.putCRS(scenario.getPopulation(), targetCRS);
 		}
+
+		final WaypointConverter converter = new WaypointConverter();
+		for (Person person : scenario.getPopulation().getPersons().values()) {
+			for (Plan plan : person.getPlans()) {
+				List<PlanElement> newPlan =
+						plan.getPlanElements().stream()
+								.map(converter::convertToWaypointIfNeeded)
+								.collect(Collectors.toList());
+				plan.getPlanElements().clear();
+				plan.getPlanElements().addAll(newPlan);
+			}
+		}
+
+		if (converter.counter > 0) {
+			log.warn("Converted "+converter.counter+" interaction activities to Waypoints." +
+					" It is recommended to adapt your input files to use waypoints from the beginning." +
+					" Look at your output files for an example.");
+		}
 	}
+
+	private static class WaypointConverter {
+		int counter = 0;
+
+		PlanElement convertToWaypointIfNeeded(PlanElement pe) {
+			if (pe instanceof Activity && ((Activity) pe).getType().endsWith(" interaction")) {
+				counter++;
+				Activity act = (Activity) pe;
+				return PopulationUtils.createWaypoint(act.getCoord(), act.getLinkId());
+			}
+			return pe;
+		}
+	}
+
 }
