@@ -41,9 +41,7 @@ import org.matsim.api.core.v01.population.PlanElement;
  * Two versions of the methods are provided, working on {@link Plan}s
  * or lists of {@link PlanElement}s.
  * <br>
- * The methods require an instance of {@link StageActivityTypes} as a parameter,
- * which is used to identify the dummy activities pertaining to trips.
- * In almost all use-cases, it should come from {@link TripRouter#getStageActivityTypes()}.
+
  *
  * @author thibautd
  */
