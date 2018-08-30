@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.matsim.api.core.v01.Coord;
@@ -48,9 +49,6 @@ public class TripStructureUtilsTest {
 	private static final PopulationFactory populationFactory =
             ScenarioUtils.createScenario(
 	        ConfigUtils.createConfig()).getPopulation().getFactory();
-    private static final String dummyType = "dummy";
-	private static final StageActivityTypes stageActivities =
-		new StageActivityTypesImpl( dummyType );
 
 	private final List<Fixture> fixtures = new ArrayList<Fixture>();
 	private static class Fixture {
@@ -161,10 +159,10 @@ public class TripStructureUtilsTest {
 		nTrips++;
 		nLegs++;
 		plan.addLeg( populationFactory.createLeg( "some mode" ) );
-		plan.addActivity(
-				populationFactory.createActivityFromLinkId(
-					dummyType,
-					linkId ));
+		plan.addWaypoint(
+				populationFactory.createWaypoint(
+						null,
+						linkId ));
 		nLegs++;
 		plan.addLeg( populationFactory.createLeg( "some other mode" ) );
 		nLegs++;
@@ -179,17 +177,17 @@ public class TripStructureUtilsTest {
 		nTrips++;
 		nLegs++;
 		plan.addLeg( populationFactory.createLeg( "some mode" ) );
-		plan.addActivity(
-				populationFactory.createActivityFromLinkId(
-					dummyType,
+		plan.addWaypoint(
+				populationFactory.createWaypoint(
+					null,
 					linkId ));
 		nLegs++;
 		plan.addLeg( populationFactory.createLeg( "some other mode" ) );
 		nLegs++;
 		plan.addLeg( populationFactory.createLeg( "some mode" ) );
-		plan.addActivity(
-				populationFactory.createActivityFromLinkId(
-					dummyType,
+		plan.addWaypoint(
+				populationFactory.createWaypoint(
+					null,
 					linkId ));
 
 		nActs++;
@@ -211,13 +209,13 @@ public class TripStructureUtilsTest {
 		nTrips++;
 		nLegs++;
 		plan.addLeg( populationFactory.createLeg( "some mode" ) );
-		plan.addActivity(
-				populationFactory.createActivityFromLinkId(
-					dummyType,
+		plan.addWaypoint(
+				populationFactory.createWaypoint(
+					null,
 					linkId ));
-		plan.addActivity(
-				populationFactory.createActivityFromLinkId(
-					dummyType,
+		plan.addWaypoint(
+				populationFactory.createWaypoint(
+					null,
 					linkId ));
 		nLegs++;
 		plan.addLeg( populationFactory.createLeg( "some mode" ) );
@@ -332,19 +330,13 @@ public class TripStructureUtilsTest {
 		for (Fixture fixture : fixtures) {
 			final List<Activity> acts =
 				TripStructureUtils.getActivities(
-						fixture.plan, 
-						stageActivities);
+						fixture.plan,
+						null);
 
 			assertEquals(
 					"unexpected number of activities in "+acts+" for fixture "+fixture.name,
 					fixture.expectedNActs,
 					acts.size() );
-
-			for (Activity act : acts) {
-				assertFalse(
-						"found a dummy act in "+acts+" for fixture "+fixture.name,
-						stageActivities.isStageActivity( act.getType() ));
-			}
 		}
 	}
 
@@ -354,7 +346,7 @@ public class TripStructureUtilsTest {
 			final List<Trip> trips =
 				TripStructureUtils.getTrips(
 						fixture.plan, 
-						stageActivities);
+						null);
 
 			assertEquals(
 					"unexpected number of trips in "+trips+" for fixture "+fixture.name,
@@ -363,10 +355,7 @@ public class TripStructureUtilsTest {
 
 			for (Trip trip : trips) {
 				for (PlanElement pe : trip.getTripElements()) {
-					if (pe instanceof Leg) continue;
-					assertTrue(
-							"found a non-dummy act in "+trip.getTripElements()+" for fixture "+fixture.name,
-							stageActivities.isStageActivity( ((Activity) pe).getType() ));
+					if (pe instanceof Activity) Assert.fail("found an activity in trip "+trip.getTripElements()+" for fixture "+fixture.name);
 				}
 
 				final int indexOfStart =
@@ -394,7 +383,7 @@ public class TripStructureUtilsTest {
 			final List<Trip> trips =
 				TripStructureUtils.getTrips(
 						fixture.plan, 
-						stageActivities);
+						null);
 
 			int countLegs = 0;
 			for (Trip trip : trips) {
