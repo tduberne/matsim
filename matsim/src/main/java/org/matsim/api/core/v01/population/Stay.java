@@ -2,6 +2,9 @@ package org.matsim.api.core.v01.population;
 
 import org.matsim.api.core.v01.BasicAddress;
 import org.matsim.api.core.v01.BasicLocation;
+import org.matsim.api.core.v01.Coord;
+import org.matsim.api.core.v01.Id;
+import org.matsim.api.core.v01.network.Link;
 
 /**
  * This interface represents a "stay" in a plan, that is, the opposite of a movement ({@link Leg}).
@@ -20,4 +23,7 @@ import org.matsim.api.core.v01.BasicLocation;
  *
  * @author thibautd
  */
-public interface Stay extends PlanElement, BasicAddress, BasicLocation {}
+public interface Stay extends PlanElement, BasicAddress, BasicLocation {
+	void setLinkId(Id<Link> linkId);
+	void setCoord(Coord coord);
+}

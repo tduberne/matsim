@@ -63,18 +63,10 @@ public interface Activity extends Stay {
 	/**
 	 * @return the if of the link to which the activity is attached.  This may start as null, but
 	 * is usually set automatically by the control(l)er before the zeroth iteration.
-	 * <p></p>
-	 * Note that there is deliberately no way to set the link id except at creation.  
-	 * We might consider something like moveActivityTo( linkid, coord ).  kai, aug'10 
 	 */
 	Id<Link> getLinkId();
 
 	Id<ActivityFacility> getFacilityId();
 
-	void setLinkId(final Id<Link> id);
-	
 	void setFacilityId(final Id<ActivityFacility> id);
-
-	void setCoord(Coord coord);
-
 }
