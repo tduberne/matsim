@@ -814,7 +814,9 @@ public final class PopulationUtils {
 			if (pe instanceof Activity) {
 				out.getPlanElements().add(createActivity((Activity) pe));
 			} else if (pe instanceof Leg) {
-				out.getPlanElements().add( createLeg( (Leg) pe ) ) ;
+				out.getPlanElements().add(createLeg((Leg) pe));
+			} else if (pe instanceof Waypoint) {
+				out.getPlanElements().add(createWaypoint((Waypoint) pe));
 			} else {
 				throw new IllegalArgumentException("unrecognized plan element type discovered");
 			}
@@ -855,6 +857,11 @@ public final class PopulationUtils {
 		// (this ends up setting type and linkId again)
 
 		return newAct ;
+	}
+
+
+	public static Waypoint createWaypoint(Waypoint from) {
+		return getFactory().createWaypoint(from.getCoord(), from.getLinkId());
 	}
 
 
