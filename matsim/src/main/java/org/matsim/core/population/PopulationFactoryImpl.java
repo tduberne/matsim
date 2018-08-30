@@ -24,12 +24,7 @@ import javax.inject.Inject;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PopulationFactory;
-import org.matsim.api.core.v01.population.Route;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.population.routes.RouteFactories;
 import org.matsim.core.population.routes.RouteFactory;
 
@@ -67,6 +62,11 @@ import org.matsim.core.population.routes.RouteFactory;
 	        Activity act = new ActivityImpl(actType) ;
 	        act.setLinkId(linkId);
 	        return act ;
+	}
+
+	@Override
+	public Waypoint createWaypoint(Coord coord, Id<Link> linkId) {
+		return new WaypointImpl(coord, linkId);
 	}
 
 	@Override

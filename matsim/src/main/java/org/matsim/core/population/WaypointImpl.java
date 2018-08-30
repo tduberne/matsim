@@ -11,6 +11,11 @@ class WaypointImpl implements Waypoint {
 	private Coord coord = null;
 	private final Attributes attributes = new Attributes();
 
+	WaypointImpl(Coord coord, Id<Link> linkId) {
+		this.linkId = linkId;
+		this.coord = coord;
+	}
+
 	@Override
 	public Id<Link> getLinkId() {
 		return linkId;

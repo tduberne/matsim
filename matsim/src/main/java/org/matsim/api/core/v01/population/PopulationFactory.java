@@ -52,6 +52,8 @@ public interface PopulationFactory extends MatsimFactory {
 	 */
 	Activity createActivityFromLinkId(String actType, Id<Link> linkId);
 
+	Waypoint createWaypoint(Coord coord, Id<Link> linkId);
+
 	Leg createLeg(String legMode);
 
 	RouteFactories getRouteFactories();
