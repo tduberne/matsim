@@ -35,11 +35,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
-import org.matsim.api.core.v01.population.PopulationFactory;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.router.TripStructureUtils.Subtour;
 import org.matsim.core.router.TripStructureUtils.Trip;
@@ -80,6 +76,16 @@ public class TripStructureUtilsSubtoursTest {
 			this.plan = plan;
 			this.expectedSubtours = subtoursIfLink;
 		}
+	}
+
+	private static Waypoint createWaypointFromLocationId(
+			final PopulationFactory fact,
+			final Id<?> loc) {
+		final Id<Link> linkLoc = Id.create(loc, Link.class);
+
+		final Waypoint w = fact.createWaypoint(null , linkLoc);
+
+		return w;
 	}
 
 	private static Activity createActivityFromLocationId(
@@ -134,8 +140,8 @@ public class TripStructureUtilsSubtoursTest {
 		final Leg leg2 = fact.createLeg( "walk" );
 		plan.addLeg( leg2 );
 		trip2.add( leg2 );
-		final Activity stage = createActivityFromLocationId( anchorAtFacilities , fact , STAGE , createId(2,anchorAtFacilities) );
-		plan.addActivity( stage );
+		final Waypoint stage = createWaypointFromLocationId( fact , createId(2,anchorAtFacilities) );
+		plan.addWaypoint( stage );
 		trip2.add( stage );
 		final Leg leg3 = fact.createLeg( "swim" );
 		plan.addLeg( leg3 );
@@ -177,8 +183,8 @@ public class TripStructureUtilsSubtoursTest {
 		final Leg leg2 = fact.createLeg("walk");
 		plan.addLeg( leg2 );
 		trip2.add(leg2);
-		final Activity stage = createActivityFromLocationId(anchorAtFacilities, fact, STAGE, createId(2,anchorAtFacilities));
-		plan.addActivity(stage);
+		final Waypoint stage = createWaypointFromLocationId( fact, createId(2,anchorAtFacilities));
+		plan.addWaypoint(stage);
 		trip2.add( stage );
 		final Leg leg3 = fact.createLeg("swim");
 		plan.addLeg(leg3);
@@ -240,8 +246,8 @@ public class TripStructureUtilsSubtoursTest {
 		final Leg leg2 = fact.createLeg( "walk" );
 		plan.addLeg( leg2 );
 		trip2.add( leg2 );
-		final Activity stage = createActivityFromLocationId( anchorAtFacilities , fact , STAGE , createId(2,anchorAtFacilities) );
-		plan.addActivity( stage );
+		final Waypoint stage = createWaypointFromLocationId( fact ,  createId(2,anchorAtFacilities) );
+		plan.addWaypoint( stage );
 		trip2.add( stage );
 		final Leg leg3 = fact.createLeg( "swim" );
 		plan.addLeg( leg3 );
@@ -347,8 +353,8 @@ public class TripStructureUtilsSubtoursTest {
 		final Leg leg2 = fact.createLeg( "walk" );
 		plan.addLeg( leg2 );
 		trip2.add( leg2 );
-		final Activity stage = createActivityFromLocationId( anchorAtFacilities , fact , STAGE , createId(2,anchorAtFacilities) );
-		plan.addActivity( stage );
+		final Waypoint stage = createWaypointFromLocationId( fact ,  createId(2,anchorAtFacilities) );
+		plan.addWaypoint( stage );
 		trip2.add( stage );
 		final Leg leg3 = fact.createLeg( "swim" );
 		plan.addLeg( leg3 );
@@ -410,8 +416,8 @@ public class TripStructureUtilsSubtoursTest {
 		final Leg leg2 = fact.createLeg( "walk" );
 		plan.addLeg( leg2 );
 		trip2.add( leg2 );
-		final Activity stage = createActivityFromLocationId( anchorAtFacilities , fact , STAGE , createId(2,anchorAtFacilities) );
-		plan.addActivity( stage );
+		final Waypoint stage = createWaypointFromLocationId( fact ,  createId(2,anchorAtFacilities) );
+		plan.addWaypoint( stage );
 		trip2.add( stage );
 		final Leg leg3 = fact.createLeg( "swim" );
 		plan.addLeg( leg3 );
@@ -575,8 +581,8 @@ public class TripStructureUtilsSubtoursTest {
 			final Leg leg2 = fact.createLeg( "walk" );
 			plan.addLeg( leg2 );
 			trip.add( leg2 );
-			final Activity stage = createActivityFromLocationId( anchorAtFacilities , fact , STAGE , createId(2,anchorAtFacilities) );
-			plan.addActivity( stage );
+			final Waypoint stage = createWaypointFromLocationId( fact ,  createId(2,anchorAtFacilities) );
+			plan.addWaypoint( stage );
 			trip.add( stage );
 			final Leg leg3 = fact.createLeg( "swim" );
 			plan.addLeg( leg3 );
@@ -647,8 +653,8 @@ public class TripStructureUtilsSubtoursTest {
 		final Leg leg2 = fact.createLeg("walk");
 		plan.addLeg(leg2);
 		trip2.add( leg2 );
-		final Activity stage = createActivityFromLocationId( anchorAtFacilities , fact , STAGE , createId(2,anchorAtFacilities) );
-		plan.addActivity( stage );
+		final Waypoint stage = createWaypointFromLocationId( fact ,  createId(2,anchorAtFacilities) );
+		plan.addWaypoint( stage );
 		trip2.add( stage );
 		final Leg leg3 = fact.createLeg( "swim" );
 		plan.addLeg( leg3 );
@@ -685,8 +691,8 @@ public class TripStructureUtilsSubtoursTest {
 		final Leg leg2 = fact.createLeg( "walk" );
 		plan.addLeg( leg2 );
 		trip2.add( leg2 );
-		final Activity stage = createActivityFromLocationId( anchorAtFacilities , fact , STAGE , createId(2,anchorAtFacilities) );
-		plan.addActivity( stage );
+		final Waypoint stage = createWaypointFromLocationId( fact ,  createId(2,anchorAtFacilities) );
+		plan.addWaypoint( stage );
 		trip2.add( stage );
 		final Leg leg3 = fact.createLeg( "swim" );
 		plan.addLeg( leg3 );
