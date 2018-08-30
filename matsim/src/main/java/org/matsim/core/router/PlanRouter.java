@@ -21,11 +21,7 @@ package org.matsim.core.router;
 
 import java.util.List;
 import org.matsim.api.core.v01.Id;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.config.Config;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.population.algorithms.PersonAlgorithm;
@@ -194,31 +190,17 @@ public class PlanRouter implements PlanAlgorithm, PersonAlgorithm {
 			final Config config ) {
 		// yyyy see similar method in TripRouter. kai, oct'17
 		if (pe instanceof Activity) {
-			// yyyyyy this should use PopulationUtils.getActivityEndTime(...) to be consistent with other code.  kai, oct'17
 			Activity act = (Activity) pe;
-			return PopulationUtils.getActivityEndTime(act, now, config ) ;
-			
-//			double endTime = act.getEndTime();
-//			double startTime = act.getStartTime();
-//			double dur = (act instanceof Activity ? act.getMaximumDuration() : Time.UNDEFINED_TIME);
-//			if (endTime != Time.UNDEFINED_TIME) {
-//				// use fromAct.endTime as time for routing
-//				return endTime;
-//			}
-//			else if ((startTime != Time.UNDEFINED_TIME) && (dur != Time.UNDEFINED_TIME)) {
-//				// use fromAct.startTime + fromAct.duration as time for routing
-//				return startTime + dur;
-//			}
-//			else if (dur != Time.UNDEFINED_TIME) {
-//				// use last used time + fromAct.duration as time for routing
-//				return now + dur;
-//			}
-//			else {
-//				throw new RuntimeException("activity has neither end-time nor duration." + act);
-//			}
+			return PopulationUtils.getActivityEndTime(act, now, config);
 		}
-		double tt = ((Leg) pe).getTravelTime();
-		return now + (tt != Time.UNDEFINED_TIME ? tt : 0);
-	}	
+		if (pe instanceof Leg) {
+			double tt = ((Leg) pe).getTravelTime();
+			return now + (tt != Time.UNDEFINED_TIME ? tt : 0);
+		}
+		if (pe instanceof Waypoint) {
+			return now;
+		}
+		throw new RuntimeException("unknown plan element type " + pe.getClass());
+	}
 }
 

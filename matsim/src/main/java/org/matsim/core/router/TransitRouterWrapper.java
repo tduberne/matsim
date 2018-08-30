@@ -21,15 +21,10 @@ package org.matsim.core.router;
 
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.network.Network;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.PlanElement;
-import org.matsim.api.core.v01.population.Route;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.population.routes.RouteUtils;
 import org.matsim.facilities.Facility;
-import org.matsim.pt.PtConstants;
 import org.matsim.pt.router.TransitRouter;
 import org.matsim.pt.routes.ExperimentalTransitRoute;
 import org.matsim.pt.transitSchedule.api.TransitSchedule;
@@ -43,8 +38,7 @@ import java.util.List;
  * @author thibautd
  */
 public class TransitRouterWrapper implements RoutingModule {
-	private static final StageActivityTypes CHECKER =
-			new StageActivityTypesImpl(PtConstants.TRANSIT_ACTIVITY_TYPE);
+	private static final StageActivityTypes CHECKER = EmptyStageActivityTypes.INSTANCE;
 	private final TransitRouter router;
 	private final RoutingModule walkRouter;
 	private final TransitSchedule transitSchedule;
@@ -123,9 +117,8 @@ public class TransitRouterWrapper implements RoutingModule {
 					ExperimentalTransitRoute tRoute = (ExperimentalTransitRoute) leg.getRoute();
 					tRoute.setTravelTime(leg.getTravelTime());
 					tRoute.setDistance(RouteUtils.calcDistance(tRoute, transitSchedule, network));
-					Activity act = PopulationUtils.createActivityFromCoordAndLinkId(PtConstants.TRANSIT_ACTIVITY_TYPE, this.transitSchedule.getFacilities().get(tRoute.getAccessStopId()).getCoord(), tRoute.getStartLinkId());
-					act.setMaximumDuration(0.0);
-					trip.add(act);
+					Waypoint waypoint = PopulationUtils.createWaypoint(this.transitSchedule.getFacilities().get(tRoute.getAccessStopId()).getCoord(), tRoute.getStartLinkId());
+					trip.add(waypoint);
 					nextCoord = this.transitSchedule.getFacilities().get(tRoute.getEgressStopId()).getCoord();
 				} else { 
 					// it is not an instance of an ExperimentalTransitRoute so it must be a (transit) walk leg.
@@ -142,9 +135,8 @@ public class TransitRouterWrapper implements RoutingModule {
 						Route route = createWalkRoute(lastFromFacility, departureTime, person, leg.getTravelTime(), toFacility);
 						leg.setRoute(route);
 					}
-					Activity act = PopulationUtils.createActivityFromCoordAndLinkId(PtConstants.TRANSIT_ACTIVITY_TYPE, nextCoord, leg.getRoute().getStartLinkId());
-					act.setMaximumDuration(0.0);
-					trip.add(act);
+					Waypoint waypoint = PopulationUtils.createWaypoint(nextCoord, leg.getRoute().getStartLinkId());
+					trip.add(waypoint);
 				}
 			}
 			trip.add(leg);
