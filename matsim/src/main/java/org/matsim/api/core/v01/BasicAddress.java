@@ -1,10 +1,9 @@
 /* *********************************************************************** *
  * project: org.matsim.*
- * Controler.java
  *                                                                         *
  * *********************************************************************** *
  *                                                                         *
- * copyright       : (C) 2007 by the members listed in the COPYING,        *
+ * copyright       : (C) 2018 by the members listed in the COPYING,        *
  *                   LICENSE and WARRANTY file.                            *
  * email           : info at matsim dot org                                *
  *                                                                         *
@@ -18,20 +17,13 @@
  *                                                                         *
  * *********************************************************************** */
 
-package org.matsim.facilities;
+package org.matsim.api.core.v01;
 
-import org.matsim.api.core.v01.*;
 import org.matsim.api.core.v01.network.Link;
 
 /**
- * A Facility is a (Basic)Location ("getCoord") that is connected to a Link ("getLinkId").
- *
- * @author (of javadoc) nagel
+ * @author thibautd
  */
-public interface Facility extends BasicLocation, BasicAddress, Customizable {
-
-	String FACILITY_NO_LONGER_IDENTIFIABLE = "After refactoring, facility " +
-													 "does not longer automatically " +
-													 "implement Identifiable.  Don't know what to do.";
-	
+public interface BasicAddress {
+	Id<Link> getLinkId();
 }
