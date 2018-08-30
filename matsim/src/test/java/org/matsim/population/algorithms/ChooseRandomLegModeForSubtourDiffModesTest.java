@@ -59,9 +59,6 @@ public class ChooseRandomLegModeForSubtourDiffModesTest {
 	private static final String[] MODES = new String[]{TransportMode.pt, TransportMode.car, TransportMode.walk};
 	private static final String[] CHAIN_BASED_MODES = new String[]{TransportMode.car};
 
-	private static final String STAGE = PtConstants.TRANSIT_ACTIVITY_TYPE;
-	private final StageActivityTypes stagesActivities = new StageActivityTypesImpl( STAGE );
-	
 	private final double probaForRandomSingleTripMode;
 	
 	// /////////////////////////////////////////////////////////////////////////
@@ -120,7 +117,6 @@ public class ChooseRandomLegModeForSubtourDiffModesTest {
 	public void testMutatedTrips() {
 		final ChooseRandomLegModeForSubtour testee =
 			new ChooseRandomLegModeForSubtour(
-					stagesActivities,
 					new MainModeIdentifierImpl(),
 					new PermissibleModesCalculatorImpl( MODES , false ),
 					MODES,

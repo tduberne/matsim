@@ -38,20 +38,15 @@ import org.matsim.core.router.TripStructureUtils.Trip;
  * @author thibautd
  */
 public final class TripsToLegsAlgorithm implements PlanAlgorithm {
-	private final StageActivityTypes blackList;
 	private final MainModeIdentifier mainModeIdentifier;
 
 	public TripsToLegsAlgorithm(final TripRouter router) {
-		this(
-				router.getStageActivityTypes(),
-				router.getMainModeIdentifier() );
+		this( router.getMainModeIdentifier() );
 	}
 
 
 	public TripsToLegsAlgorithm(
-			final StageActivityTypes blackList,
 			final MainModeIdentifier mainModeIdentifier) {
-		this.blackList = blackList;
 		this.mainModeIdentifier = mainModeIdentifier;
 	}
 

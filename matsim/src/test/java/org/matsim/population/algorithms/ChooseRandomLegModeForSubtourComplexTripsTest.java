@@ -61,8 +61,6 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 	private static final String[] MODES = new String[]{TransportMode.pt, TransportMode.car};
 	private static final String[] CHAIN_BASED_MODES = new String[]{TransportMode.car};
 
-	private static final String STAGE = PtConstants.TRANSIT_ACTIVITY_TYPE;
-	private final StageActivityTypes stagesActivities = new StageActivityTypesImpl( STAGE );
 	private final double probaForRandomSingleTripMode;
 	
 	// /////////////////////////////////////////////////////////////////////////
@@ -87,25 +85,25 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "h" , id1 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "h" , id1 ) );
@@ -131,25 +129,25 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 
 				for (int i =0; i < 2; i++) {
 					plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-					plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+					plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 					plan.addLeg( fact.createLeg( TransportMode.pt ) );
-					plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+					plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 					plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 					plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
 
 					plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-					plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+					plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 					plan.addLeg( fact.createLeg( TransportMode.pt ) );
-					plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+					plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 					plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 					plan.addLeg( fact.createLeg( TransportMode.pt ) );
 					plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-					plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+					plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 					plan.addLeg( fact.createLeg( TransportMode.pt ) );
-					plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+					plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 					plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-					plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+					plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 					plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 					plan.addActivity( fact.createActivityFromLinkId( "h" , id1 ) );
@@ -176,25 +174,25 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "h" , id1 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "s" , id4 ) );
@@ -204,31 +202,31 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "l" , id2 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "s" , id4 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
@@ -242,11 +240,11 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "l" , id2 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "h" , id1 ) );
@@ -277,17 +275,17 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "s" , id4 ) );
@@ -305,11 +303,11 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "s" , id4 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
@@ -349,9 +347,9 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "breakfast" , id1 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "check_e-mails" , id3 ) );
@@ -359,17 +357,17 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "write_paper" , id3 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id3 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id3 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "buy_food" , id4 ) );
@@ -381,32 +379,32 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "w" , id3 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "run" , id2 ) );
 				plan.addActivity( fact.createActivityFromLinkId( "stretch" , id2 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "s" , id4 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "read" , id3 ) );
@@ -423,11 +421,11 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 				plan.addActivity( fact.createActivityFromLinkId( "shower" , id2 ) );
 
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.pt ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id1 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id1 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
-				plan.addActivity(  fact.createActivityFromLinkId( STAGE , id2 ) );
+				plan.addWaypoint(  fact.createWaypoint( null , id2 ) );
 				plan.addLeg( fact.createLeg( TransportMode.transit_walk ) );
 
 				plan.addActivity( fact.createActivityFromLinkId( "have_dinner" , id1 ) );
@@ -466,7 +464,6 @@ public class ChooseRandomLegModeForSubtourComplexTripsTest {
 	public void testMutatedTrips() {
 		final ChooseRandomLegModeForSubtour testee =
 			new ChooseRandomLegModeForSubtour(
-					stagesActivities,
 					new MainModeIdentifierImpl(),
 					new PermissibleModesCalculatorImpl( MODES , false ),
 					MODES,

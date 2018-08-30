@@ -229,7 +229,7 @@ public class TripsToLegsAlgorithmTest {
 
 	private static void performTest(final Fixture fixture) {
 
-		final TripsToLegsAlgorithm algorithm = new TripsToLegsAlgorithm(EmptyStageActivityTypes.INSTANCE, new MainModeIdentifierImpl() );
+		final TripsToLegsAlgorithm algorithm = new TripsToLegsAlgorithm(new MainModeIdentifierImpl() );
 		algorithm.run( fixture.plan );
 
 		assertEquals(
