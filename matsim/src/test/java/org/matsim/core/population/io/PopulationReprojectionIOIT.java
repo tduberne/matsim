@@ -22,8 +22,8 @@ import org.matsim.core.controler.Controler;
 import org.matsim.core.network.io.MatsimNetworkReader;
 import org.matsim.core.network.io.NetworkWriter;
 import org.matsim.core.router.TripStructureUtils;
+import org.matsim.core.scenario.ProjectionUtils;
 import org.matsim.core.scenario.ScenarioUtils;
-import org.matsim.core.utils.geometry.CoordUtils;
 import org.matsim.core.utils.geometry.CoordinateTransformation;
 import org.matsim.core.utils.geometry.transformations.TransformationFactory;
 import org.matsim.core.utils.io.IOUtils;
@@ -148,8 +148,8 @@ public class PopulationReprojectionIOIT {
 		new PopulationReader(originalScenario).parse(IOUtils.newUrl(berlin, BASE_FILE));
 		final Config config = ConfigUtils.createConfig(berlin);
 
-		originalScenario.getNetwork().getAttributes().putAttribute(CoordUtils.INPUT_CRS_ATT, INITIAL_CRS);
-		originalScenario.getPopulation().getAttributes().putAttribute(CoordUtils.INPUT_CRS_ATT, INITIAL_CRS);
+		ProjectionUtils.putCRS(originalScenario.getNetwork(), INITIAL_CRS);
+		ProjectionUtils.putCRS(originalScenario.getPopulation(), INITIAL_CRS);
 
 		new PopulationWriter(originalScenario.getPopulation()).write(utils.getOutputDirectory()+BASE_FILE);
 		new NetworkWriter(originalScenario.getNetwork()).write(utils.getOutputDirectory()+NET_FILE);
@@ -190,7 +190,7 @@ public class PopulationReprojectionIOIT {
 		Assert.assertEquals(
 				"wrong CRS information after loading",
 				TARGET_CRS,
-				scenario.getPopulation().getAttributes().getAttribute(CoordUtils.INPUT_CRS_ATT));
+				ProjectionUtils.getCRS(scenario.getPopulation()));
 
 		// do not perform ANY mobsim run
 		config.controler().setLastIteration( -1 );
