@@ -750,6 +750,10 @@ public final class PopulationUtils {
 		return getFactory().createActivityFromCoord(type, coord) ;
 	}
 
+	public static Waypoint createWaypoint(Coord coord, Id<Link> linkId) {
+		return getFactory().createWaypoint(coord, linkId);
+	}
+
 	public static Activity createActivityFromCoordAndLinkId(String type, Coord coord, Id<Link> linkId) {
 		Activity act = getFactory().createActivityFromCoord(type, coord) ;
 		act.setLinkId(linkId);
