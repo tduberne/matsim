@@ -90,6 +90,9 @@ import java.io.IOException;
 					}
 					PopulationWriterHandlerImplV5.endLeg(out);
 				}
+				else {
+					throw new RuntimeException("unknown plan element type "+pe.getClass().getName());
+				}
 			}
 			PopulationWriterHandlerImplV5.endPlan(out);
 		}

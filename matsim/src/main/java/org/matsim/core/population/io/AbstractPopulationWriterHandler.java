@@ -71,6 +71,9 @@ abstract class AbstractPopulationWriterHandler implements PopulationWriterHandle
 					}
 					this.endLeg(writer);
 				}
+				else {
+					throw new RuntimeException("unknown plan element type "+pe.getClass().getName());
+				}
 			}
 			this.endPlan(writer);
 		}

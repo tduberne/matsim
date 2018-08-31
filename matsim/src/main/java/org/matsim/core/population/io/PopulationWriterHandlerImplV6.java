@@ -99,6 +99,9 @@ import java.util.Map;
 					}
 					PopulationWriterHandlerImplV6.endLeg(out);
 				}
+				else {
+					throw new RuntimeException("unknown plan element type "+pe.getClass().getName());
+				}
 			}
 			PopulationWriterHandlerImplV6.endPlan(out);
 		}
