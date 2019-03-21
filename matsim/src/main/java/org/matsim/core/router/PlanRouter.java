@@ -20,17 +20,17 @@
 package org.matsim.core.router;
 
 import java.util.List;
+
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.population.*;
 import org.matsim.core.config.Config;
-import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.population.algorithms.PersonAlgorithm;
 import org.matsim.core.population.algorithms.PlanAlgorithm;
 import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.router.TripStructureUtils.Trip;
 import org.matsim.core.utils.misc.Time;
 import org.matsim.facilities.ActivityFacilities;
-import org.matsim.facilities.Facility;
+import org.matsim.facilities.FacilitiesUtils;
 import org.matsim.vehicles.Vehicle;
 
 /**
@@ -85,8 +85,8 @@ public class PlanRouter implements PlanAlgorithm, PersonAlgorithm {
 			final List<? extends PlanElement> newTrip =
 					tripRouter.calcRoute(
 							tripRouter.getMainModeIdentifier().identifyMainMode( oldTrip.getTripElements() ),
-							toFacility( oldTrip.getOriginActivity() ),
-							toFacility( oldTrip.getDestinationActivity() ),
+						  FacilitiesUtils.toFacility( oldTrip.getOriginActivity(), facilities ),
+						  FacilitiesUtils.toFacility( oldTrip.getDestinationActivity(), facilities ),
 							calcEndOfActivity( oldTrip.getOriginActivity() , plan, tripRouter.getConfig() ),
 							plan.getPerson() );
 			putVehicleFromOldTripIntoNewTripIfMeaningful(oldTrip, newTrip);
@@ -138,36 +138,12 @@ public class PlanRouter implements PlanAlgorithm, PersonAlgorithm {
 		}
 	}
 
-	// /////////////////////////////////////////////////////////////////////////
-	// helpers
-	// /////////////////////////////////////////////////////////////////////////
-	private Facility toFacility(final Activity act) {
-//		if (  (act.getLinkId() == null && act.getCoord() == null)  // yyyy this used to be || instead of && --???  kai, jun'16
-//				&& facilities != null
-//				&& !facilities.getFacilities().isEmpty()) {
-//			// use facilities only if the activity does not provide the required fields.
-//			// yyyyyy Seems to me that the Access/EgressRoutingModule only needs either link or coord to start from.  So we only go
-//			// to facilities if neither is provided.  --  This may, however, be at odds of how it is done in the AccessEgressRoutingModule, so we
-//			// need to conceptually sort this out!!  kai, jun'16
-//			return facilities.getFacilities().get( act.getFacilityId() );
-//		}
-
-		// use facility first if available i.e. reversing the logic above Amit July'18
-		if (	facilities != null &&
-				! facilities.getFacilities().isEmpty() &&
-				act.getFacilityId() != null ) {
-			return facilities.getFacilities().get( act.getFacilityId() );
-		}
-
-		return new ActivityWrapperFacility( act );
-	}
-
 	public static double calcEndOfActivity(
 			final Activity activity,
 			final Plan plan,
 			final Config config ) {
 		
-		if (activity.getEndTime() != Time.UNDEFINED_TIME) return activity.getEndTime();
+		if (!Time.isUndefinedTime(activity.getEndTime())) return activity.getEndTime();
 
 		// no sufficient information in the activity...
 		// do it the long way.
@@ -177,30 +153,12 @@ public class PlanRouter implements PlanAlgorithm, PersonAlgorithm {
 		double now = 0;
 
 		for (PlanElement pe : plan.getPlanElements()) {
-			now = updateNow( now , pe, config );
+			now = TripRouter.calcEndOfPlanElement( now, pe, config );
 			if (pe == activity) return now;
 		}
 
 		throw new RuntimeException( "activity "+activity+" not found in "+plan.getPlanElements() );
 	}
 
-	private static double updateNow(
-			final double now,
-			final PlanElement pe,
-			final Config config ) {
-		// yyyy see similar method in TripRouter. kai, oct'17
-		if (pe instanceof Activity) {
-			Activity act = (Activity) pe;
-			return PopulationUtils.getActivityEndTime(act, now, config);
-		}
-		if (pe instanceof Leg) {
-			double tt = ((Leg) pe).getTravelTime();
-			return now + (tt != Time.UNDEFINED_TIME ? tt : 0);
-		}
-		if (pe instanceof Waypoint) {
-			return now;
-		}
-		throw new RuntimeException("unknown plan element type " + pe.getClass());
-	}
 }
 

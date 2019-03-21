@@ -87,6 +87,8 @@ public class NoiseTimeTracker implements PersonEntersVehicleEventHandler, LinkEn
 	
 	private int cWarn1 = 0;
 	private int cWarn2 = 0;
+	private int cWarn3 = 0;
+	private int cWarn4 = 0;
 
 	@Override
 	public void handleEvent(TransitDriverStartsEvent event) {
@@ -580,9 +582,14 @@ public class NoiseTimeTracker implements PersonEntersVehicleEventHandler, LinkEn
 						if (Math.abs(marginalDamageCostCarThisLink) < 0.0000000001) {
 							marginalDamageCostCarThisLink = 0.;
 						} else {
-							log.warn("The marginal damage cost per car on link " + thisLink.toString() + " for receiver point " + rp.getId().toString() + " is " + marginalDamageCostCarThisLink + ".");
-							log.warn("final immission: " + rp.getFinalImmission() + " - immission plus one car " + noiseImmissionPlusOneCarThisLink + " - marginal damage cost car: " + marginalDamageCostCarThisLink);
-							log.warn("Setting the marginal damage cost per car to 0.");
+							if (cWarn3 == 0) {
+								log.warn("The marginal damage cost per car on link " + thisLink.toString() + " for receiver point " + rp.getId().toString() + " is " + marginalDamageCostCarThisLink + ".");
+								log.warn("final immission: " + rp.getFinalImmission() + " - immission plus one car " + noiseImmissionPlusOneCarThisLink + " - marginal damage cost car: " + marginalDamageCostCarThisLink);
+								log.warn("Setting the marginal damage cost per car to 0.");
+								log.warn("This message is only given once.");
+								cWarn3++;
+							}
+							
 							marginalDamageCostCarThisLink = 0.;
 						}
 					}
@@ -594,9 +601,14 @@ public class NoiseTimeTracker implements PersonEntersVehicleEventHandler, LinkEn
 						if (Math.abs(marginalDamageCostHGVThisLink) < 0.0000000001) {
 							marginalDamageCostHGVThisLink = 0.;
 						} else {
-							log.warn("The marginal damage cost per HGV on link " + thisLink.toString() + " for receiver point " + rp.getId().toString() + " is " + marginalDamageCostHGVThisLink + ".");
-							log.warn("final immission: " + rp.getFinalImmission() + " - immission plus one car " + noiseImmissionPlusOneCarThisLink + " - marginal damage cost car: " + marginalDamageCostHGVThisLink);
-							log.warn("Setting the marginal damage cost per HGV to 0.");
+							if (cWarn4 == 0) {
+								log.warn("The marginal damage cost per HGV on link " + thisLink.toString() + " for receiver point " + rp.getId().toString() + " is " + marginalDamageCostHGVThisLink + ".");
+								log.warn("final immission: " + rp.getFinalImmission() + " - immission plus one car " + noiseImmissionPlusOneCarThisLink + " - marginal damage cost car: " + marginalDamageCostHGVThisLink);
+								log.warn("Setting the marginal damage cost per HGV to 0.");
+								log.warn("This message is only given once.");
+								cWarn4++;
+							}
+							
 							marginalDamageCostHGVThisLink = 0.;
 						}
 					}
@@ -696,7 +708,11 @@ public class NoiseTimeTracker implements PersonEntersVehicleEventHandler, LinkEn
 			for(Id<Link> linkId : rp.getLinkId2distanceCorrection().keySet()) {
 				double distanceCorrection = rp.getLinkId2distanceCorrection().get(linkId);
 				double angleCorrection = rp.getLinkId2angleCorrection().get(linkId);
-				
+				double shieldingCorrection = 0.;
+				if(noiseParams.isConsiderNoiseBarriers()) {
+					shieldingCorrection = rp.getLinkId2ShieldingCorrection().get(linkId);
+				}
+
 				if (noiseParams.getTunnelLinkIDsSet().contains(linkId)) {
 					immision.setLinkId2IsolatedImmission(linkId, 0.);
 					linkId2isolatedImmissionPlusOneCar.put(linkId, 0.);
@@ -711,7 +727,7 @@ public class NoiseTimeTracker implements PersonEntersVehicleEventHandler, LinkEn
 			 		if (noiseLink != null) {
 						if (!(noiseLink.getEmission() == 0.)) {
 							noiseImmission = noiseLink.getEmission()
-									+ distanceCorrection + angleCorrection;
+									+ distanceCorrection + angleCorrection - shieldingCorrection;
 							
 							if (noiseImmission < 0.) {
 								noiseImmission = 0.;
@@ -720,7 +736,7 @@ public class NoiseTimeTracker implements PersonEntersVehicleEventHandler, LinkEn
 						
 						if (!(noiseLink.getEmissionPlusOneCar() == 0.)) {
 							noiseImmissionPlusOneCar = noiseLink.getEmissionPlusOneCar()
-									+ distanceCorrection + angleCorrection;
+									+ distanceCorrection + angleCorrection - shieldingCorrection;
 							
 							if (noiseImmissionPlusOneCar < 0.) {
 								noiseImmissionPlusOneCar = 0.;
@@ -729,7 +745,7 @@ public class NoiseTimeTracker implements PersonEntersVehicleEventHandler, LinkEn
 						
 						if (!(noiseLink.getEmissionPlusOneHGV() == 0.)) {
 							noiseImmissionPlusOneHGV = noiseLink.getEmissionPlusOneHGV()
-									+ distanceCorrection + angleCorrection;
+									+ distanceCorrection + angleCorrection - shieldingCorrection;
 							
 							if (noiseImmissionPlusOneHGV < 0.) {
 								noiseImmissionPlusOneHGV = 0.;

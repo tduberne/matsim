@@ -31,24 +31,23 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineSegment;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.operation.linemerge.LineMerger;
+import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
+import org.locationtech.jts.triangulate.quadedge.QuadEdge;
+import org.locationtech.jts.triangulate.quadedge.QuadEdgeSubdivision;
+import org.locationtech.jts.triangulate.quadedge.QuadEdgeTriangle;
+import org.locationtech.jts.triangulate.quadedge.Vertex;
+import org.locationtech.jts.util.UniqueCoordinateArrayFilter;
 import org.matsim.core.utils.io.IOUtils;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineSegment;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.operation.linemerge.LineMerger;
-import com.vividsolutions.jts.triangulate.DelaunayTriangulationBuilder;
-import com.vividsolutions.jts.triangulate.quadedge.QuadEdge;
-import com.vividsolutions.jts.triangulate.quadedge.QuadEdgeSubdivision;
-import com.vividsolutions.jts.triangulate.quadedge.QuadEdgeTriangle;
-import com.vividsolutions.jts.triangulate.quadedge.Vertex;
-import com.vividsolutions.jts.util.UniqueCoordinateArrayFilter;
 
 /**
  * Class to generate the concave hull from a set of given points. The algorithm 
@@ -71,15 +70,15 @@ public class ConcaveHull {
 	private double threshold;
 	private boolean printIterations = false;
 	
-	private HashMap<LineSegment, Integer> segments = new HashMap<LineSegment, Integer>();
-	private HashMap<Integer, HullEdge> edges = new HashMap<Integer, HullEdge>();
-	private HashMap<Integer, HullTriangle> triangles = new HashMap<Integer, HullTriangle>();
+	private HashMap<LineSegment, Integer> segments = new HashMap<>();
+	private HashMap<Integer, HullEdge> edges = new HashMap<>();
+	private HashMap<Integer, HullTriangle> triangles = new HashMap<>();
 
-	private TreeMap<Integer, HullEdge> consideredEdges = new TreeMap<Integer, HullEdge>();
-	private HashMap<Integer, HullEdge> ignoredEdges = new HashMap<Integer, HullEdge>();
+	private TreeMap<Integer, HullEdge> consideredEdges = new TreeMap<>();
+	private HashMap<Integer, HullEdge> ignoredEdges = new HashMap<>();
 	
-	private Map<Coordinate,Integer> coordinates = new HashMap<Coordinate, Integer>();
-	private Map<Integer, HullNode> vertices = new HashMap<Integer, HullNode>();
+	private Map<Coordinate,Integer> coordinates = new HashMap<>();
+	private Map<Integer, HullNode> vertices = new HashMap<>();
 
 
 	/**
@@ -285,9 +284,9 @@ public class ConcaveHull {
 		 *   therefore be `border' QuadEdges.
 		 *   TODO find out what frame and border edges really are?!
 		 */
-		List<QuadEdge> qeFrameBorder = new ArrayList<QuadEdge>();
-		List<QuadEdge> qeFrame = new ArrayList<QuadEdge>();
-		List<QuadEdge> qeBorder = new ArrayList<QuadEdge>();
+		List<QuadEdge> qeFrameBorder = new ArrayList<>();
+		List<QuadEdge> qeFrame = new ArrayList<>();
+		List<QuadEdge> qeBorder = new ArrayList<>();
 
 		for (QuadEdge qe : quadEdges) {
 			if (qes.isFrameBorderEdge(qe)) {
@@ -313,13 +312,13 @@ public class ConcaveHull {
 		}
 		
 		/* Sort the boundary list on edge length in descending order. */
-		HashMap<QuadEdge, Double> qeLengths = new HashMap<QuadEdge, Double>();
+		HashMap<QuadEdge, Double> qeLengths = new HashMap<>();
 		for (QuadEdge qe : quadEdges) {
 			qeLengths.put(qe, qe.toLineSegment().getLength());
 		}
 				
 		QuadEdgeComparator dc = new QuadEdgeComparator(qeLengths);
-		TreeMap<QuadEdge, Double> qeSorted = new TreeMap<QuadEdge, Double>(dc);
+		TreeMap<QuadEdge, Double> qeSorted = new TreeMap<>(dc);
 		qeSorted.putAll(qeLengths);
 
 		/* Initialise the vertex boundary function. Set all vertices's 
@@ -508,7 +507,7 @@ public class ConcaveHull {
 
 		/* Assemble the final concave Hull. Start by adding all the border
 		 * edges. */
-		List<LineString> borderEdges = new ArrayList<LineString>();
+		List<LineString> borderEdges = new ArrayList<>();
 		for(HullEdge e : this.consideredEdges.values()){
 			borderEdges.add( e.getGeometry().toGeometry(this.geomFactory) );
 		}
@@ -562,7 +561,7 @@ public class ConcaveHull {
 	 */
 	public static List<Coordinate> getClusterCoords(String fileName) {  
 		LOG.info("Reading coordinate list from " + fileName);
-		List<Coordinate> coordinateList = new ArrayList<Coordinate>();
+		List<Coordinate> coordinateList = new ArrayList<>();
 		
 		try {
 			BufferedReader br = IOUtils.getBufferedReader(fileName);

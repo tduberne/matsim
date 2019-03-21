@@ -23,6 +23,7 @@
 package org.matsim.contrib.drt.routing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -56,7 +57,7 @@ public class StopBasedDrtRoutingModule implements RoutingModule {
 		Pair<TransitStopFacility, TransitStopFacility> findStops(Facility fromFacility, Facility toFacility);
 	}
 
-	private final StageActivityTypes drtStageActivityType = new DrtStageActivityType();
+	private final DrtStageActivityType drtStageActivityType;
 	private final PopulationFactory populationFactory;
 	private final RoutingModule walkRouter;
 	private final AccessEgressStopFinder stopFinder;
@@ -72,28 +73,38 @@ public class StopBasedDrtRoutingModule implements RoutingModule {
 		this.walkRouter = walkRouter;
 		this.stopFinder = stopFinder;
 		this.drtCfg = drtCfg;
+		this.drtStageActivityType = new DrtStageActivityType(drtCfg.getMode());
 	}
 
 	@Override
-	public List<? extends PlanElement> calcRoute( Facility fromFacility, Facility toFacility, double departureTime,
-								    Person person) {
+	public List<? extends PlanElement> calcRoute(Facility fromFacility, Facility toFacility, double departureTime,
+			Person person) {
 		Pair<TransitStopFacility, TransitStopFacility> stops = stopFinder.findStops(fromFacility, toFacility);
 
 		TransitStopFacility accessFacility = stops.getLeft();
 		if (accessFacility == null) {
-			printError(() -> "No access stop found, agent will walk. Agent Id:\t" + person.getId());
-			return (walkRouter.calcRoute(fromFacility, toFacility, departureTime, person));
+			printWarning(() -> "No access stop found, agent will walk, using mode "
+					+ drtStageActivityType.drtWalk
+					+ ". Agent Id:\t"
+					+ person.getId());
+			return Collections.singletonList(createDrtWalkLeg(fromFacility, toFacility, departureTime, person));
 		}
 
 		TransitStopFacility egressFacility = stops.getRight();
 		if (egressFacility == null) {
-			printError(() -> "No egress stop found, agent will walk. Agent Id:\t" + person.getId());
-			return (walkRouter.calcRoute(fromFacility, toFacility, departureTime, person));
+			printWarning(() -> "No egress stop found, agent will walk, using mode "
+					+ drtStageActivityType.drtWalk
+					+ ". Agent Id:\t"
+					+ person.getId());
+			return Collections.singletonList(createDrtWalkLeg(fromFacility, toFacility, departureTime, person));
 		}
 
 		if (accessFacility.getLinkId() == egressFacility.getLinkId()) {
-			printError(() -> "Start and end stop are the same, agent will walk. Agent Id:\t" + person.getId());
-			return (walkRouter.calcRoute(fromFacility, toFacility, departureTime, person));
+			printWarning(() -> "Start and end stop are the same, agent will walk, using mode "
+					+ drtStageActivityType.drtWalk
+					+ ". Agent Id:\t"
+					+ person.getId());
+			return Collections.singletonList(createDrtWalkLeg(fromFacility, toFacility, departureTime, person));
 		}
 
 		List<PlanElement> trip = new ArrayList<>();
@@ -115,24 +126,23 @@ public class StopBasedDrtRoutingModule implements RoutingModule {
 		return trip;
 	}
 
-	private Leg createDrtWalkLeg( Facility fromFacility, Facility toFacility, double departureTime,
-						Person person) {
+	private Leg createDrtWalkLeg(Facility fromFacility, Facility toFacility, double departureTime, Person person) {
 		Leg leg = (Leg)walkRouter.calcRoute(fromFacility, toFacility, departureTime, person).get(0);
-		leg.setMode(DrtStageActivityType.DRT_WALK);
+		leg.setMode(drtStageActivityType.drtWalk);
 		return leg;
 	}
 
 	private Activity createDrtStageActivity(Facility stopFacility) {
-		Activity activity = populationFactory
-				.createActivityFromCoord(DrtStageActivityType.DRT_STAGE_ACTIVITY, stopFacility.getCoord());
+		Activity activity = populationFactory.createActivityFromCoord(drtStageActivityType.drtStageActivity,
+				stopFacility.getCoord());
 		activity.setMaximumDuration(1);
 		activity.setLinkId(stopFacility.getLinkId());
 		return activity;
 	}
 
-	private void printError(Supplier<String> supplier) {
+	private void printWarning(Supplier<String> supplier) {
 		if (drtCfg.isPrintDetailedWarnings()) {
-			Logger.getLogger(getClass()).error(supplier.get());
+			Logger.getLogger(getClass()).warn(supplier.get());
 		}
 	}
 

@@ -855,12 +855,12 @@ public final class PlanCalcScoreConfigGroup extends ConfigGroup {
 		// ---
 
 		private double priority = 1.0;
-		private double typicalDuration = Time.UNDEFINED_TIME;
-		private double minimalDuration = Time.UNDEFINED_TIME;
-		private double openingTime = Time.UNDEFINED_TIME;
-		private double latestStartTime = Time.UNDEFINED_TIME;
-		private double earliestEndTime = Time.UNDEFINED_TIME;
-		private double closingTime = Time.UNDEFINED_TIME;
+		private double typicalDuration = Time.getUndefinedTime();
+		private double minimalDuration = Time.getUndefinedTime();
+		private double openingTime = Time.getUndefinedTime();
+		private double latestStartTime = Time.getUndefinedTime();
+		private double earliestEndTime = Time.getUndefinedTime();
+		private double closingTime = Time.getUndefinedTime();
 
 		public ActivityParams() {
 			super(SET_TYPE);
@@ -878,10 +878,12 @@ public final class PlanCalcScoreConfigGroup extends ConfigGroup {
 			StringBuilder str = new StringBuilder();
 			str.append("method to compute score at typical duration.  Options: | ");
 			for (TypicalDurationScoreComputation value : TypicalDurationScoreComputation.values()) {
-				str.append(value.name() + " | ");
+				str.append(value.name());
+				str.append(" | ");
 			}
-			str.append("Use " + TypicalDurationScoreComputation.uniform.name()
-					+ " for backwards compatibility (all activities same score; higher proba to drop long acts).");
+			str.append("Use ");
+			str.append(TypicalDurationScoreComputation.uniform.name());
+			str.append(" for backwards compatibility (all activities same score; higher proba to drop long acts).");
 			map.put(TYPICAL_DURATION_SCORE_COMPUTATION, str.toString());
 			// ---
 			map.put(TYPICAL_DURATION, TYPICAL_DURATION_CMT);
@@ -930,7 +932,7 @@ public final class PlanCalcScoreConfigGroup extends ConfigGroup {
 
 		public void setMinimalDuration(final double minimalDuration) {
 			testForLocked();
-			if ((minimalDuration != Time.UNDEFINED_TIME) && (minDurCnt < 1)) {
+			if ((!Time.isUndefinedTime(minimalDuration)) && (minDurCnt < 1)) {
 				minDurCnt++;
 				log.warn(
 						"Setting minimalDuration different from zero is discouraged.  It is probably implemented correctly, "
@@ -1048,13 +1050,20 @@ public final class PlanCalcScoreConfigGroup extends ConfigGroup {
 		private static final String MARGINAL_UTILITY_OF_TRAVELING = "marginalUtilityOfTraveling_util_hr";
 
 		private static final String CONSTANT = "constant";
+		private static final String CONSTANT_CMT = "[utils] alternative-specific constant.  Normally per trip, but that is probably buggy for multi-leg trips.";
+
 		public static final String MODE = "mode";
+		
+		public static final String DAILY_MONETARY_CONSTANT = "dailyMonetaryConstant";
+		public static final String DAILY_UTILITY_CONSTANT = "dailyUtilityConstant";
 		
 		private String mode = null;
 		private double traveling = -6.0;
 		private double distance = 0.0;
 		private double monetaryDistanceRate = 0.0;
 		private double constant = 0.0;
+		private double dailyMonetaryConstant = 0.0;
+		private double dailyUtilityConstant = 0.0;
 
 		// @Override public String toString() {
 		// String str = super.toString();
@@ -1081,11 +1090,14 @@ public final class PlanCalcScoreConfigGroup extends ConfigGroup {
 					"[utils/hr] additional marginal utility of traveling.  normally negative.  this comes on top "
 							+ "of the opportunity cost of time");
 			map.put("marginalUtilityOfDistance_util_m",
-					"[utils/m] utility of walking per m, normally negative.  this is "
+					"[utils/m] utility of traveling (e.g. walking or driving) per m, normally negative.  this is "
 							+ "on top of the time (dis)utility.");
 			map.put(MONETARY_DISTANCE_RATE, MONETARY_DISTANCE_RATE_CMT);
-			map.put(CONSTANT, "[utils] alternative-specific constant.  no guarantee that this is used anywhere. "
-					+ "default=0 to be backwards compatible for the time being");
+			map.put(CONSTANT, CONSTANT_CMT );
+			map.put(DAILY_UTILITY_CONSTANT, "[utils] daily utility constant. "
+					+ "default=0 to be backwards compatible");
+			map.put(DAILY_MONETARY_CONSTANT, "[money] daily monetary constant. "
+					+ "default=0 to be backwards compatible");
 			return map;
 		}
 
@@ -1094,59 +1106,84 @@ public final class PlanCalcScoreConfigGroup extends ConfigGroup {
 			testForLocked();
 			this.mode = mode;
 		}
-
 		@StringGetter(MODE)
 		public String getMode() {
 			return mode;
 		}
-
+		// ---
 		@StringSetter(MARGINAL_UTILITY_OF_TRAVELING)
 		public void setMarginalUtilityOfTraveling(double traveling) {
 			testForLocked();
 			this.traveling = traveling;
 		}
-
 		@StringGetter(MARGINAL_UTILITY_OF_TRAVELING)
 		public double getMarginalUtilityOfTraveling() {
 			return this.traveling;
 		}
-
+		// ---
 		@StringGetter("marginalUtilityOfDistance_util_m")
 		public double getMarginalUtilityOfDistance() {
 			return distance;
 		}
-
 		@StringSetter("marginalUtilityOfDistance_util_m")
 		public void setMarginalUtilityOfDistance(double distance) {
 			testForLocked();
 			this.distance = distance;
 		}
 
-		@StringGetter("constant")
+		/**
+		 * @return {@value #CONSTANT_CMT}
+		 */
+		// ---
+		@StringGetter(CONSTANT)
 		public double getConstant() {
 			return this.constant;
 		}
-
-		@StringSetter("constant")
+		/**
+		 * @param constant -- {@value #CONSTANT_CMT}
+		 */
+		@StringSetter(CONSTANT)
 		public void setConstant(double constant) {
 			testForLocked();
 			this.constant = constant;
 		}
-
+		// ---
+		/**
+		 * @return {@value #MONETARY_DISTANCE_RATE_CMT}
+		 */
 		@StringGetter(MONETARY_DISTANCE_RATE)
 		public double getMonetaryDistanceRate() {
 			return this.monetaryDistanceRate;
 		}
 
 		/**
-		 * @param monetaryDistanceRate
-		 *            -- {@value #MONETARY_DISTANCE_RATE_CMT}
+		 * @param monetaryDistanceRate -- {@value #MONETARY_DISTANCE_RATE_CMT}
 		 */
 		@StringSetter(MONETARY_DISTANCE_RATE)
 		public void setMonetaryDistanceRate(double monetaryDistanceRate) {
 			testForLocked();
 			this.monetaryDistanceRate = monetaryDistanceRate;
 		}
+		@StringGetter(DAILY_MONETARY_CONSTANT)
+		public double getDailyMonetaryConstant() {
+			return dailyMonetaryConstant;
+		}
+
+		@StringSetter(DAILY_MONETARY_CONSTANT)
+		public void setDailyMonetaryConstant(double dailyMonetaryConstant) {
+			this.dailyMonetaryConstant = dailyMonetaryConstant;
+		}
+
+		@StringGetter(DAILY_UTILITY_CONSTANT)
+		public double getDailyUtilityConstant() {
+			return dailyUtilityConstant;
+		}
+
+		@StringSetter(DAILY_UTILITY_CONSTANT)
+		public void setDailyUtilityConstant(double dailyUtilityConstant) {
+			this.dailyUtilityConstant = dailyUtilityConstant;
+		}
+
 
 	}
 
@@ -1437,11 +1474,11 @@ public final class PlanCalcScoreConfigGroup extends ConfigGroup {
 				if (actType.isScoringThisActivityAtAll()) {
 					// (checking consistency only if activity is scored at all)
 
-					if ((actType.getOpeningTime() != Time.UNDEFINED_TIME)
-							&& (actType.getClosingTime() != Time.UNDEFINED_TIME)) {
+					if ((!Time.isUndefinedTime(actType.getOpeningTime()))
+							&& (!Time.isUndefinedTime(actType.getClosingTime()))) {
 						hasOpeningAndClosingTime = true;
 					}
-					if ((actType.getOpeningTime() != Time.UNDEFINED_TIME) && (getLateArrival_utils_hr() < -0.001)) {
+					if ((!Time.isUndefinedTime(actType.getOpeningTime())) && (getLateArrival_utils_hr() < -0.001)) {
 						hasOpeningTimeAndLatePenalty = true;
 					}
 					if (actType.getOpeningTime() == 0. && actType.getClosingTime() > 24. * 3600 - 1) {

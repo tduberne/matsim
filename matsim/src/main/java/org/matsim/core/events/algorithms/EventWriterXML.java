@@ -27,8 +27,9 @@ import org.matsim.core.utils.io.UncheckedIOException;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class EventWriterXML implements EventWriter, BasicEventHandler {
@@ -44,8 +45,8 @@ public class EventWriterXML implements EventWriter, BasicEventHandler {
 	 *
 	 * @param stream
 	 */
-	public EventWriterXML(final PrintStream stream ) {
-		this.out = new BufferedWriter(new OutputStreamWriter(stream));
+	public EventWriterXML(final OutputStream stream ) {
+		this.out = new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8));
 		this.writeHeader();
 	}
 

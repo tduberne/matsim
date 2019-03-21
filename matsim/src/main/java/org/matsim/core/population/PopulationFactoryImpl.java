@@ -27,6 +27,7 @@ import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.population.*;
 import org.matsim.core.population.routes.RouteFactories;
 import org.matsim.core.population.routes.RouteFactory;
+import org.matsim.facilities.ActivityFacility;
 
 /**
  * @author dgrether, mrieser
@@ -67,6 +68,13 @@ import org.matsim.core.population.routes.RouteFactory;
 	@Override
 	public Waypoint createWaypoint(Coord coord, Id<Link> linkId) {
 		return new WaypointImpl(coord, linkId);
+    }
+
+	@Override
+	public Activity createActivityFromActivityFacilityId( String actType, Id<ActivityFacility> activityFacilityId ){
+		Activity act = new ActivityImpl( actType ) ;
+		act.setFacilityId( activityFacilityId );
+		return act ;
 	}
 
 	@Override
