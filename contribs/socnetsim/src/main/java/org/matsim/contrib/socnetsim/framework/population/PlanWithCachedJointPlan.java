@@ -23,11 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.utils.objectattributes.attributable.Attributes;
 
@@ -155,6 +151,11 @@ public final class PlanWithCachedJointPlan implements Plan {
 	@Override
 	public void addActivity(Activity act) {
 		this.delegate.addActivity(act);
+	}
+
+	@Override
+	public void addWaypoint(Waypoint waypoint) {
+		this.delegate.addWaypoint(waypoint);
 	}
 
 	@Override

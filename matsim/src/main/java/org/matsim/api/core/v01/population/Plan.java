@@ -42,7 +42,13 @@ public interface Plan extends MatsimPopulationObject, Customizable, BasicPlan, A
 
 	void addActivity(final Activity act);
 
-	void addWaypoint(final Waypoint waypoint);
+	default void addWaypoint(final Waypoint waypoint) {
+		// default implementation for classes implemented before waypoints were introduced.
+		// classes that return an immutable collection will fail and have to implement this themselves.
+		// classes that return a mutable copy will ignore the action... Hopefully there is none that does that.
+		// td Mar 17
+		getPlanElements().add(waypoint);
+	}
 
 	String getType();
 

@@ -25,12 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.matsim.api.core.v01.TransportMode;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
-import org.matsim.api.core.v01.population.PopulationFactory;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.contrib.dvrp.fleet.DvrpVehicle;
 import org.matsim.contrib.dvrp.path.VrpPaths;
 import org.matsim.contrib.dvrp.schedule.DriveTask;
@@ -146,6 +141,11 @@ public class VrpAgentQueryHelper implements NonPlanAgentQueryHelper {
 
 		@Override
 		public void addActivity(Activity act) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void addWaypoint(Waypoint waypoint) {
 			throw new UnsupportedOperationException();
 		}
 

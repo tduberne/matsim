@@ -27,12 +27,7 @@ import java.util.Map;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
-import org.matsim.api.core.v01.population.Route;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.facilities.ActivityFacility;
 import org.matsim.utils.objectattributes.attributable.Attributes;
 
@@ -106,6 +101,11 @@ import org.matsim.utils.objectattributes.attributable.Attributes;
 
 	@Override
 	public final void addActivity(Activity act) {
+		throw new RuntimeException("Not supported. Aborting!");
+	}
+
+	@Override
+	public void addWaypoint(Waypoint waypoint) {
 		throw new RuntimeException("Not supported. Aborting!");
 	}
 
