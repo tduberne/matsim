@@ -23,6 +23,7 @@ package org.matsim.core.population.io;
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
+import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.population.*;
 import org.matsim.core.population.PersonUtils;
 import org.matsim.core.population.routes.NetworkRoute;
@@ -61,7 +62,7 @@ import java.util.Map;
 	@Override
 	public void writeHeaderAndStartElement(final BufferedWriter out) throws IOException {
 		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-		out.write("<!DOCTYPE population SYSTEM \"" + MatsimXmlWriter.DEFAULT_DTD_LOCATION + "population_v6.dtd\">\n\n");
+		out.write("<!DOCTYPE population SYSTEM \"" + MatsimXmlWriter.DEFAULT_DTD_LOCATION + "population_v7.dtd\">\n\n");
 	}
 
 	@Override
@@ -99,6 +100,11 @@ import java.util.Map;
 					}
 					PopulationWriterHandlerImplV7.endLeg(out);
 				}
+				else if (pe instanceof Waypoint) {
+					Waypoint waypoint = (Waypoint) pe;
+
+					writeWaypoint(waypoint, out);
+				}
 				else {
 					throw new RuntimeException("unknown plan element type "+pe.getClass().getName());
 				}
@@ -119,6 +125,11 @@ import java.util.Map;
 		out.write("\t<person id=\"");
 		out.write(person.getId().toString());
 		out.write("\"");
+
+		out.write(" subpopulation=\"");
+		out.write(person.getSubpopulation());
+		out.write("\"");
+
 		out.write(">\n");
 		this.attributesWriter.writeAttributes( "\t\t" , out , person.getAttributes() );
 	}
@@ -207,6 +218,11 @@ import java.util.Map;
 		out.write("\t\t\t<leg mode=\"");
 		out.write(leg.getMode());
 		out.write("\"");
+
+		out.write("\t\t\t<leg routingHandler=\"");
+		out.write(leg.getRoutingHandler());
+		out.write("\"");
+
 		if (!Time.isUndefinedTime(leg.getDepartureTime())) {
 			out.write(" dep_time=\"");
 			out.write(Time.writeTime(leg.getDepartureTime()));
@@ -268,6 +284,24 @@ import java.util.Map;
 		if (rd != null) {
 			out.write(rd);
 		}
+	}
+
+
+	private void writeWaypoint(Waypoint waypoint, BufferedWriter out) throws IOException {
+		out.write("\t\t\t<waypoint");
+
+		final Coord coord = waypoint.getCoord();
+		final Id<Link> linkId = waypoint.getLinkId();
+
+		if (coord != null) {
+			out.write(" x=\""+coord.getX()+"\" y=\""+coord.getY()+"\"");
+
+			if (coord.hasZ()) out.write(" z=\""+coord.getZ()+"\"");
+		}
+
+		if (linkId != null) out.write(" link=\""+ linkId +"\"");
+
+		out.write("/>");
 	}
 
 	private static void endRoute(final BufferedWriter out) throws IOException {
