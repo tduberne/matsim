@@ -23,21 +23,21 @@ package org.matsim.api.core.v01.population;
 
 public interface Leg extends PlanElement {
 
-    public String getMode();
+    String getMode();
 
     /**
      * Sets the mode of the leg. No consistency check is done; in particular, the route or travel time info from
      * a different mode may remain in place.
      */
-    public void setMode(String mode);
+    void setMode(String mode);
 
-    public Route getRoute();
+    Route getRoute();
 
-    public void setRoute(Route route);
+    void setRoute(Route route);
 
-    public double getDepartureTime();
+    double getDepartureTime();
 
-    public void setDepartureTime(final double seconds);
+    void setDepartureTime(double seconds);
 
     /**
      * Design thoughts:<ul>
@@ -46,8 +46,11 @@ public interface Leg extends PlanElement {
      * kai/benjamin, jun'11
      * </ul>
      */
-    public double getTravelTime();
+    double getTravelTime();
 
-    public void setTravelTime(final double seconds);
+    void setTravelTime(double seconds);
 
+    void setRoutingHandler(String routingHandler);
+
+    String getRoutingHandler();
 }

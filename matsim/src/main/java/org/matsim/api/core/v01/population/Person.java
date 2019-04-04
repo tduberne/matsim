@@ -26,5 +26,6 @@ import org.matsim.utils.objectattributes.attributable.Attributable;
  * @author dgrether
  */
 public interface Person extends Customizable, Attributable, HasPlansAndId<Plan, Person> {
-
+	void setSubpopulation(String subpopulation);
+	String getSubpopulation();
 }

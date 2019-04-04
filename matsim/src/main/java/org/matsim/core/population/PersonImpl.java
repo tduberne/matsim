@@ -48,6 +48,7 @@ import org.matsim.utils.objectattributes.attributable.Attributes;
 	private boolean locked;
 
 	private final Attributes attributes = new Attributes();
+	private String subpopulation = null;
 
 	/* deliberately package */ PersonImpl(final Id<Person> id) {
 		this.id = id;
@@ -155,4 +156,13 @@ import org.matsim.utils.objectattributes.attributable.Attributes;
 	}
 
 
+	@Override
+	public String getSubpopulation() {
+		return subpopulation;
+	}
+
+	@Override
+	public void setSubpopulation(String subpopulation) {
+		this.subpopulation = subpopulation;
+	}
 }

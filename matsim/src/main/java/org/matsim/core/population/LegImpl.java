@@ -34,6 +34,7 @@ import org.matsim.utils.objectattributes.attributable.Attributes;
 	private String mode;
 
 	private final Attributes attributes = new Attributes();
+	private String routingHandler = null;
 
 	/* deliberately package */  LegImpl(final String transportMode) {
 		this.mode = transportMode;
@@ -67,6 +68,16 @@ import org.matsim.utils.objectattributes.attributable.Attributes;
 	@Override
 	public final void setTravelTime(final double travTime) {
 		this.travTime = travTime;
+	}
+
+	@Override
+	public void setRoutingHandler(String routingHandler) {
+		this.routingHandler = routingHandler;
+	}
+
+	@Override
+	public String getRoutingHandler() {
+		return this.routingHandler;
 	}
 
 	@Override
