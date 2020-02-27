@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.matsim.api.core.v01.Id;
@@ -116,7 +117,13 @@ public abstract class ReflectiveConfigGroup extends ConfigGroup implements Matsi
 		setters = getSetters();
 		stringGetters = getStringGetters();
 
-		if ( !setters.keySet().equals( stringGetters.keySet() ) ) {
+		Collection<String> gettableFields =
+		 setters.entrySet().stream()
+		 .filter(e -> !e.getValue().isAnnotationPresent(NoGetter.class))
+		 .map(e -> e.getKey())
+		 .collect(Collectors.toSet());
+
+		if ( !gettableFields.equals( stringGetters.keySet() ) ) {
 			throw new InconsistentModuleException( "setters and getters inconsistent" );
 		}
 
@@ -404,7 +411,7 @@ public abstract class ReflectiveConfigGroup extends ConfigGroup implements Matsi
 	public final Map<String, String> getParams() {
 		final Map<String, String> map = super.getParams();
 
-		for (String f : setters.keySet()) {
+		for (String f : stringGetters.keySet()) {
 			addParameterToMap( map , f );
 		}
 
@@ -504,6 +511,21 @@ public abstract class ReflectiveConfigGroup extends ConfigGroup implements Matsi
 	@Documented
 	@Retention( RetentionPolicy.RUNTIME )
 	public static @interface DoNotConvertNull {}
+
+	/**
+	 * Setters for which not getter is available should be annotated with this.
+	 * Those setters should be private, although that is not enforced.
+	 * <br>
+	 * This is provided as a backwards-compatibility device, to
+	 * <ul>
+	 * <li>accept parameters under an old name, or</li>
+	 * <li>throw an exception with a meaningful message</li>
+	 * </u>
+	 */
+	@Documented
+	@Retention( RetentionPolicy.RUNTIME )
+	public static @interface NoGetter {}
+
 
 	public static class InconsistentModuleException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
