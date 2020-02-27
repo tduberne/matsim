@@ -261,13 +261,9 @@ public final class PlanCalcScoreConfigGroup extends ReflectiveConfigGroup {
 	 * @returns a list of all Activities over all Subpopulations (if existent)
 	 */
 	public Collection<String> getActivityTypes() {
-		if (getScoringParameters(null) != null)
-			return getScoringParameters(null).getActivityParamsPerType().keySet();
-		else{
-			Set<String> activities = new HashSet<>();
-			getScoringParametersPerSubpopulation().values().forEach(item -> activities.addAll(item.getActivityParamsPerType().keySet()));
-			return activities;
-		}
+		Set<String> activities = new HashSet<>();
+		getScoringParametersPerSubpopulation().values().forEach(item -> activities.addAll(item.getActivityParamsPerType().keySet()));
+		return activities;
 	}
 
 	/*
@@ -275,15 +271,9 @@ public final class PlanCalcScoreConfigGroup extends ReflectiveConfigGroup {
 	 * @returns a list of all Modes over all Subpopulations (if existent)
 	 */
 	public Collection<String> getAllModes() {
-		if (getScoringParameters(null) != null) {
-			return getScoringParameters(null).getModes().keySet();
-			
-		} else {
-			Set<String> modes = new HashSet<>();
-			getScoringParametersPerSubpopulation().values().forEach(item -> modes.addAll(item.getModes().keySet()));
-			return modes;
-		}
-		
+		Set<String> modes = new HashSet<>();
+		getScoringParametersPerSubpopulation().values().forEach(item -> modes.addAll(item.getModes().keySet()));
+		return modes;
 	}
 	
 	public Map<String, ScoringParameterSet> getScoringParametersPerSubpopulation() {
