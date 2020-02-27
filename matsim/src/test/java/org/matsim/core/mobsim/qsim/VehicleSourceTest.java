@@ -130,8 +130,8 @@ public class VehicleSourceTest {
 		config.controler().setCreateGraphs(false);
 		config.controler().setDumpDataAtEnd(false);
 
-		config.planCalcScore().addActivityParams( new ActivityParams("h").setTypicalDuration(1. * 3600. ) );
-		config.planCalcScore().addActivityParams( new ActivityParams("w").setTypicalDuration(1. * 3600. ) );
+		config.planCalcScore().getScoringParameters(null).addActivityParams( new ActivityParams("h").setTypicalDuration(1. * 3600. ) );
+		config.planCalcScore().getScoringParameters(null).addActivityParams( new ActivityParams("w").setTypicalDuration(1. * 3600. ) );
 
 		final Controler cont = new Controler(scenario);
 		cont.getConfig().controler().setOverwriteFileSetting(OverwriteFileSetting.deleteDirectoryIfExists);

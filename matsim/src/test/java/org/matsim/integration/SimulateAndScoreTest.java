@@ -275,7 +275,7 @@ public class SimulateAndScoreTest extends MatsimTestCase {
 		PlanCalcScoreConfigGroup.ActivityParams w = new PlanCalcScoreConfigGroup.ActivityParams("w");
 		w.setTypicalDuration(8 * 3600);
 
-		ScoringParameterSet scoringParameters = config.planCalcScore().getOrCreateScoringParameters(null);
+		ScoringParameterSet scoringParameters = scenario.getConfig().planCalcScore().getOrCreateScoringParameters(null);
 
 		scoringParameters.setPerforming_utils_hr(0);
 		final double travelingPt = -1.00;

@@ -186,7 +186,7 @@ public class VehicleHandlerTest {
 		ActivityParams genericParams = new ActivityParams("generic");
 		genericParams.setTypicalDuration(1.0);
 
-		config.planCalcScore().addActivityParams(genericParams);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(genericParams);
 
 		Scenario scenario = ScenarioUtils.createScenario(config);
 

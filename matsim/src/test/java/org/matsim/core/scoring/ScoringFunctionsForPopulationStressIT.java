@@ -141,12 +141,12 @@ public class ScoringFunctionsForPopulationStressIT {
 	private void work(Config config) {
 		PlanCalcScoreConfigGroup.ActivityParams work = new PlanCalcScoreConfigGroup.ActivityParams("work");
 		work.setTypicalDuration(100.0);
-		config.planCalcScore().addActivityParams(work);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(work);
 		PlanCalcScoreConfigGroup.ModeParams car = new PlanCalcScoreConfigGroup.ModeParams("car");
 		car.setMarginalUtilityOfTraveling(0.0);
 		car.setMarginalUtilityOfDistance(0.0);
 		car.setConstant(-1.0);
-		config.planCalcScore().addModeParams(car);
+		config.planCalcScore().getScoringParameters(null).addModeParams(car);
 		final Scenario scenario = ScenarioUtils.createScenario(config);
 		Id<Person> personId = Id.createPersonId(1);
 		scenario.getPopulation().addPerson(scenario.getPopulation().getFactory().createPerson(personId));
@@ -248,12 +248,12 @@ public class ScoringFunctionsForPopulationStressIT {
 		config.parallelEventHandling().setSynchronizeOnSimSteps(false);
 		PlanCalcScoreConfigGroup.ActivityParams work = new PlanCalcScoreConfigGroup.ActivityParams("work");
 		work.setTypicalDuration(100.0);
-		config.planCalcScore().addActivityParams(work);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(work);
 		PlanCalcScoreConfigGroup.ModeParams car = new PlanCalcScoreConfigGroup.ModeParams("car");
 		car.setMarginalUtilityOfTraveling(0.0);
 		car.setMarginalUtilityOfDistance(0.0);
 		car.setConstant(-1.0);
-		config.planCalcScore().addModeParams(car);
+		config.planCalcScore().getScoringParameters(null).addModeParams(car);
 		final Scenario scenario = ScenarioUtils.createScenario(config);
 		Id<Person> personId = Id.createPersonId(1);
 		scenario.getPopulation().addPerson(scenario.getPopulation().getFactory().createPerson(personId));

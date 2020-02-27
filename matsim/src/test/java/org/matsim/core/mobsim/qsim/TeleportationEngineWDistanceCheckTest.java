@@ -66,7 +66,7 @@ public class TeleportationEngineWDistanceCheckTest {
 		config.controler().setLastIteration(0);
 		
 		ActivityParams params = new ActivityParams("dummy" ) ;
-		config.planCalcScore().addActivityParams(params);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(params);
 		params.setScoringThisActivityAtAll(false);
 		
 		StrategySettings stratSets = new StrategySettings() ;

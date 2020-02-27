@@ -22,6 +22,7 @@ package org.matsim.pt.router;
 
 import junit.framework.TestCase;
 
+import org.matsim.pt.router.TransitRouterConfig.UtilityParameters;
 import org.matsim.pt.router.TransitRouterNetwork.TransitRouterNetworkLink;
 import org.matsim.testcases.MatsimTestCase;
 
@@ -199,16 +200,17 @@ public class AdaptedTransitRouterNetworkTravelTimeCostTest extends TestCase {
 			}
 		}
 
-		double oldCost = - conf.getUtilityOfLineSwitch_utl();
+		UtilityParameters utilityParameters = conf.getUtilityParameters(null);
+		double oldCost = - utilityParameters.getUtilityOfLineSwitch_utl();
 		double cost1 = tc.getLinkTravelDisutility(testLink, 7.0*3600, null, null, null);
-		conf.setUtilityOfLineSwitch_utl(0.0);
+		utilityParameters.setUtilityOfLineSwitch_utl(0.0);
 		double cost2 = tc.getLinkTravelDisutility(testLink, 6.0*3600, null, null, null); // use different time because of internal caching effects
 		assertEquals(oldCost, cost1 - cost2, MatsimTestCase.EPSILON);
 		conf.setAdditionalTransferTime(120.0);
 		double cost3 = tc.getLinkTravelDisutility(testLink, 5.0*3600, null, null, null);
-		assertEquals(-120.0 * conf.getMarginalUtilityOfWaitingPt_utl_s(), cost3 - cost2, MatsimTestCase.EPSILON);
+		assertEquals(-120.0 * utilityParameters.getMarginalUtilityOfWaitingPt_utl_s(), cost3 - cost2, MatsimTestCase.EPSILON);
 		// test with custom value for utility of waiting, just in case too many of the default marginal utilities are 0.0
-		conf.setMarginalUtilityOfWaitingPt_utl_s(-12.0 / 3600.0);
+		utilityParameters.setMarginalUtilityOfWaitingPt_utl_s(-12.0 / 3600.0);
 		double cost4 = tc.getLinkTravelDisutility(testLink, 7.0*3600, null, null, null);
 		assertEquals(120.0 * 12.0 / 3600.0, cost4 - cost2, MatsimTestCase.EPSILON);
 	}

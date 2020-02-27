@@ -49,6 +49,7 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ActivityParams;
+import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ScoringParameterSet;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.TypicalDurationScoreComputation;
 import org.matsim.core.network.NetworkUtils;
 import org.matsim.core.population.PersonUtils;
@@ -680,34 +681,36 @@ public class CharyparNagelScoringFunctionTest {
 			PlanCalcScoreConfigGroup scoring = this.config.planCalcScore();
 			scoring.setBrainExpBeta(2.0);
 
-			scoring.getModes().get(TransportMode.car).setConstant(0.0);
-			scoring.getModes().get(TransportMode.pt).setConstant(0.0);
-			scoring.getModes().get(TransportMode.walk).setConstant(0.0);
-			scoring.getModes().get(TransportMode.bike).setConstant(0.0);
+			ScoringParameterSet scoringParameters = scoring.getScoringParameters(null);
 
-			scoring.setEarlyDeparture_utils_hr(0.0);
-			scoring.setLateArrival_utils_hr(0.0);
-			scoring.setMarginalUtlOfWaiting_utils_hr(0.0);
-			scoring.setPerforming_utils_hr(0.0);
-			scoring.getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(0.0);
-			scoring.getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(0.0);
-			scoring.getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling(0.0);
-			scoring.getModes().get(TransportMode.bike).setMarginalUtilityOfTraveling(0.0);
+			scoringParameters.getModes().get(TransportMode.car).setConstant(0.0);
+			scoringParameters.getModes().get(TransportMode.pt).setConstant(0.0);
+			scoringParameters.getModes().get(TransportMode.walk).setConstant(0.0);
+			scoringParameters.getModes().get(TransportMode.bike).setConstant(0.0);
 
-			scoring.setMarginalUtilityOfMoney(1.) ;
-			scoring.getModes().get(TransportMode.car).setMonetaryDistanceRate(0.0);
-			scoring.getModes().get(TransportMode.pt).setMonetaryDistanceRate(0.0);
+			scoringParameters.setEarlyDeparture_utils_hr(0.0);
+			scoringParameters.setLateArrival_utils_hr(0.0);
+			scoringParameters.setMarginalUtlOfWaiting_utils_hr(0.0);
+			scoringParameters.setPerforming_utils_hr(0.0);
+			scoringParameters.getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(0.0);
+			scoringParameters.getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(0.0);
+			scoringParameters.getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling(0.0);
+			scoringParameters.getModes().get(TransportMode.bike).setMarginalUtilityOfTraveling(0.0);
+
+			scoringParameters.setMarginalUtilityOfMoney(1.) ;
+			scoringParameters.getModes().get(TransportMode.car).setMonetaryDistanceRate(0.0);
+			scoringParameters.getModes().get(TransportMode.pt).setMonetaryDistanceRate(0.0);
 
 
 			// setup activity types h and w for scoring
 			PlanCalcScoreConfigGroup.ActivityParams params = new PlanCalcScoreConfigGroup.ActivityParams("h");
 			params.setTypicalDuration(15*3600);
-			scoring.addActivityParams(params);
+			scoringParameters.addActivityParams(params);
 
 
 			params = new PlanCalcScoreConfigGroup.ActivityParams("w");
 			params.setTypicalDuration(3*3600);
-			scoring.addActivityParams(params);
+			scoringParameters.addActivityParams(params);
 
 			this.scenario = ScenarioUtils.createScenario(config);
 			this.network = (Network) this.scenario.getNetwork();
