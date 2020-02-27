@@ -115,7 +115,7 @@ public class NetworkRoutingModuleTest {
 		
 		{
 			double monetaryDistanceRateCar = -1.;
-			f.s.getConfig().planCalcScore().getModes().get(TransportMode.car).setMonetaryDistanceRate(monetaryDistanceRateCar);
+			f.s.getConfig().planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setMonetaryDistanceRate(monetaryDistanceRateCar);
 
 			TravelDisutility costObject = new RandomizingTimeDistanceTravelDisutilityFactory( TransportMode.car, f.s.getConfig().planCalcScore() ).createTravelDisutility(timeObject);
 

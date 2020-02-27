@@ -98,7 +98,7 @@ public class EquilTwoAgentsTest {
 		ActivityParams params = new ActivityParams("h") ;
         params.setTypicalDuration(123456789.0) ; // probably dummy
 		params.setScoringThisActivityAtAll(false);
-		pcsConfig.addActivityParams(params) ;
+		pcsConfig.getScoringParameters(null).addActivityParams(params) ;
 		
 		final Controler controler = new Controler(config);
 		controler.getConfig().controler().setOverwriteFileSetting(OutputDirectoryHierarchy.OverwriteFileSetting.overwriteExistingFiles);

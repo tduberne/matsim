@@ -192,10 +192,10 @@ public class CharyparNagelScoringFunctionTest {
 	public void testTravelingAndConstantCar() {
 		Fixture f = new Fixture();
 		final double traveling = -6.0;
-		f.config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling);
 		assertEquals(-3.0, calcScore(f), EPSILON);
 		double constantCar = -6.0;
-		f.config.planCalcScore().getModes().get(TransportMode.car).setConstant(constantCar);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setConstant(constantCar);
 		assertEquals(-9.0, calcScore(f), EPSILON);
 	}
 
@@ -203,10 +203,10 @@ public class CharyparNagelScoringFunctionTest {
 	public void testTravelingPtAndConstantPt() {
 		Fixture f = new Fixture();
 		final double travelingPt = -9.0;
-		f.config.planCalcScore().getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(travelingPt);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(travelingPt);
 		assertEquals(-2.25, calcScore(f), EPSILON);
 		double constantPt = -3.0;
-		f.config.planCalcScore().getModes().get(TransportMode.pt).setConstant(constantPt);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.pt).setConstant(constantPt);
 		assertEquals(-5.25, calcScore(f), EPSILON);
 	}
 
@@ -214,10 +214,10 @@ public class CharyparNagelScoringFunctionTest {
 	public void testTravelingWalkAndConstantWalk() {
 		Fixture f = new Fixture();
 		final double travelingWalk = -18.0;
-		f.config.planCalcScore().getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling(travelingWalk);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling(travelingWalk);
 		assertEquals(-9.0, calcScore(f), EPSILON ) ;
 		double constantWalk = -1.0;
-		f.config.planCalcScore().getModes().get(TransportMode.walk).setConstant(constantWalk);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.walk).setConstant(constantWalk);
 		assertEquals(-10.0, calcScore(f), EPSILON);
 	}
 
@@ -225,10 +225,10 @@ public class CharyparNagelScoringFunctionTest {
 	public void testTravelingBikeAndConstantBike(){
 		Fixture f = new Fixture();
 		final double travelingBike = -6.0;
-		f.config.planCalcScore().getModes().get(TransportMode.bike).setMarginalUtilityOfTraveling(travelingBike);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.bike).setMarginalUtilityOfTraveling(travelingBike);
 		assertEquals(-1.5, calcScore(f), EPSILON ) ;
 		double constantBike = -2.0;
-		f.config.planCalcScore().getModes().get(TransportMode.bike).setConstant(constantBike);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.bike).setConstant(constantBike);
 		assertEquals(-3.5, calcScore(f), EPSILON);
 	}
 
@@ -243,10 +243,10 @@ public class CharyparNagelScoringFunctionTest {
 		double zeroUtilDurW = getZeroUtilDuration_hrs(3.0, 1.0);
 		double zeroUtilDurH = getZeroUtilDuration_hrs(15.0, 1.0);
 
-		f.config.planCalcScore().setPerforming_utils_hr(perf);
+		f.config.planCalcScore().getScoringParameters(null).setPerforming_utils_hr(perf);
 		
 		if(typicalDurationComputation.equals(TypicalDurationScoreComputation.uniform)){
-			for(ActivityParams p : f.config.planCalcScore().getActivityParams()){
+			for(ActivityParams p : f.config.planCalcScore().getScoringParameters(null).getActivityParams()){
 				p.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.uniform);
 			}
 		}	
@@ -271,10 +271,10 @@ public class CharyparNagelScoringFunctionTest {
 	public void testOpeningTime() {
 		Fixture f = new Fixture();
 		double perf = +6.0;
-		f.config.planCalcScore().setPerforming_utils_hr(perf);
+		f.config.planCalcScore().getScoringParameters(null).setPerforming_utils_hr(perf);
 		double initialScore = calcScore(f);
 
-		ActivityParams wParams = f.config.planCalcScore().getActivityParams("w");
+		ActivityParams wParams = f.config.planCalcScore().getScoringParameters(null).getActivityParams("w");
 		wParams.setOpeningTime(8*3600.0); // now the agent arrives 30min early to the FIRST work activity and has to wait
 		double score = calcScore(f);
 
@@ -289,10 +289,10 @@ public class CharyparNagelScoringFunctionTest {
 	public void testClosingTime() {
 		Fixture f = new Fixture();
 		double perf = +6.0;
-		f.config.planCalcScore().setPerforming_utils_hr(perf);
+		f.config.planCalcScore().getScoringParameters(null).setPerforming_utils_hr(perf);
 		double initialScore = calcScore(f);
 
-		ActivityParams wParams = f.config.planCalcScore().getActivityParams("w");
+		ActivityParams wParams = f.config.planCalcScore().getScoringParameters(null).getActivityParams("w");
 		wParams.setClosingTime(15*3600.0); // now the agent stays 1h too long at the LAST work activity
 		double score = calcScore(f);
 
@@ -307,10 +307,10 @@ public class CharyparNagelScoringFunctionTest {
 	public void testOpeningClosingTime() {
 		Fixture f = new Fixture();
 		double perf_hrs = +6.0;
-		f.config.planCalcScore().setPerforming_utils_hr(perf_hrs);
+		f.config.planCalcScore().getScoringParameters(null).setPerforming_utils_hr(perf_hrs);
 		
 		if(typicalDurationComputation.equals(TypicalDurationScoreComputation.uniform)){
-			for(ActivityParams p : f.config.planCalcScore().getActivityParams()){
+			for(ActivityParams p : f.config.planCalcScore().getScoringParameters(null).getActivityParams()){
 				p.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.uniform);
 			}
 		}	
@@ -319,7 +319,7 @@ public class CharyparNagelScoringFunctionTest {
 
 		// test1: agents has to wait before and after
 
-		ActivityParams wParams = f.config.planCalcScore().getActivityParams("w");
+		ActivityParams wParams = f.config.planCalcScore().getScoringParameters(null).getActivityParams("w");
 		wParams.setOpeningTime( 8*3600.0); // the agent arrives 30min early
 		wParams.setClosingTime(15*3600.0); // the agent stays 1h too long
 		double score = calcScore(f);
@@ -371,9 +371,9 @@ public class CharyparNagelScoringFunctionTest {
 	public void testWaitingTime() {
 		Fixture f = new Fixture();
 		double waiting = -10.0;
-		f.config.planCalcScore().setMarginalUtlOfWaiting_utils_hr(waiting);
+		f.config.planCalcScore().getScoringParameters(null).setMarginalUtlOfWaiting_utils_hr(waiting);
 
-		ActivityParams wParams = f.config.planCalcScore().getActivityParams("w");
+		ActivityParams wParams = f.config.planCalcScore().getScoringParameters(null).getActivityParams("w");
 		wParams.setOpeningTime( 8*3600.0); // the agent arrives 30min early
 		wParams.setClosingTime(15*3600.0); // the agent stays 1h too long
 
@@ -388,9 +388,9 @@ public class CharyparNagelScoringFunctionTest {
 	public void testEarlyDeparture() {
 		Fixture f = new Fixture();
 		double disutility = -10.0;
-		f.config.planCalcScore().setEarlyDeparture_utils_hr(disutility);
+		f.config.planCalcScore().getScoringParameters(null).setEarlyDeparture_utils_hr(disutility);
 
-		ActivityParams wParams = f.config.planCalcScore().getActivityParams("w");
+		ActivityParams wParams = f.config.planCalcScore().getScoringParameters(null).getActivityParams("w");
 		wParams.setEarliestEndTime(10.75 * 3600.0); // require the agent to work until 16:45
 
 		// the agent left 45mins too early
@@ -404,9 +404,9 @@ public class CharyparNagelScoringFunctionTest {
 	public void testMinimumDuration() {
 		Fixture f = new Fixture();
 		double disutility = -10.0;
-		f.config.planCalcScore().setEarlyDeparture_utils_hr(disutility);
+		f.config.planCalcScore().getScoringParameters(null).setEarlyDeparture_utils_hr(disutility);
 
-		ActivityParams wParams = f.config.planCalcScore().getActivityParams("w");
+		ActivityParams wParams = f.config.planCalcScore().getScoringParameters(null).getActivityParams("w");
 		wParams.setMinimalDuration(3 * 3600.0); // require the agent to be 3 hours at every working activity
 
 		// the agent overall works 1.25h too short
@@ -420,9 +420,9 @@ public class CharyparNagelScoringFunctionTest {
 	public void testLateArrival() {
 		Fixture f = new Fixture();
 		double disutility = -10.0;
-		f.config.planCalcScore().setLateArrival_utils_hr(disutility);
+		f.config.planCalcScore().getScoringParameters(null).setLateArrival_utils_hr(disutility);
 
-		ActivityParams wParams = f.config.planCalcScore().getActivityParams("w");
+		ActivityParams wParams = f.config.planCalcScore().getScoringParameters(null).getActivityParams("w");
 		wParams.setLatestStartTime(13 * 3600.0); // agent should start working latest at 13 o'clock
 
 		// the agent arrived 30mins late
@@ -437,9 +437,9 @@ public class CharyparNagelScoringFunctionTest {
 	public void testStuckPenalty() {
 		Fixture f = new Fixture();
 		// test 1 where late arrival has the biggest impact
-		f.config.planCalcScore().setLateArrival_utils_hr(-18.0);
+		f.config.planCalcScore().getScoringParameters(null).setLateArrival_utils_hr(-18.0);
 		final double traveling1 = -6.0;
-		f.config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling1);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling1);
 
 		ScoringFunction testee = getScoringFunctionInstance(f, f.person);
 		testee.handleActivity((Activity) f.plan.getPlanElements().get(0));
@@ -454,9 +454,9 @@ public class CharyparNagelScoringFunctionTest {
 		assertEquals(24 * -18.0 - 6.0 * 0.50, testee.getScore(), EPSILON); // stuck penalty + 30min traveling
 
 		// test 2 where traveling has the biggest impact
-		f.config.planCalcScore().setLateArrival_utils_hr(-3.0);
+		f.config.planCalcScore().getScoringParameters(null).setLateArrival_utils_hr(-3.0);
 		final double traveling = -6.0;
-		f.config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(traveling);
 
 		testee = getScoringFunctionInstance(f, f.person);
 		testee.handleActivity((Activity) f.plan.getPlanElements().get(0));
@@ -474,17 +474,17 @@ public class CharyparNagelScoringFunctionTest {
 	public void testDistanceCostScoringCar() {
 		Fixture f = new Fixture();
 		// test 1 where marginalUtitityOfMoney is fixed to 1.0
-		f.config.planCalcScore().setMarginalUtilityOfMoney(1.0);
+		f.config.planCalcScore().getScoringParameters(null).setMarginalUtilityOfMoney(1.0);
 		//		this.config.charyparNagelScoring().setMarginalUtlOfDistanceCar(-0.00001);
 		double monetaryDistanceRateCar1 = -0.00001;
-		f.config.planCalcScore().getModes().get(TransportMode.car).setMonetaryDistanceRate(monetaryDistanceRateCar1);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setMonetaryDistanceRate(monetaryDistanceRateCar1);
 
 		assertEquals(-0.25, calcScore(f), EPSILON);
 
 		// test 2 where MonetaryDistanceCostRate is fixed to -1.0
 		double monetaryDistanceRateCar = -1.0;
-		f.config.planCalcScore().getModes().get(TransportMode.car).setMonetaryDistanceRate(monetaryDistanceRateCar);
-		f.config.planCalcScore().setMarginalUtilityOfMoney(0.5);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setMonetaryDistanceRate(monetaryDistanceRateCar);
+		f.config.planCalcScore().getScoringParameters(null).setMarginalUtilityOfMoney(0.5);
 
 		assertEquals(-12500.0, calcScore(f), EPSILON);
 	}
@@ -493,17 +493,17 @@ public class CharyparNagelScoringFunctionTest {
 	public void testDistanceCostScoringPt() {
 		Fixture f = new Fixture();
 		// test 1 where marginalUtitityOfMoney is fixed to 1.0
-		f.config.planCalcScore().setMarginalUtilityOfMoney(1.0);
+		f.config.planCalcScore().getScoringParameters(null).setMarginalUtilityOfMoney(1.0);
 		//		this.config.charyparNagelScoring().setMarginalUtlOfDistancePt(-0.00001);
 		double monetaryDistanceRatePt1 = -0.00001;
-		f.config.planCalcScore().getModes().get(TransportMode.pt).setMonetaryDistanceRate(monetaryDistanceRatePt1);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.pt).setMonetaryDistanceRate(monetaryDistanceRatePt1);
 
 		assertEquals(-0.20, calcScore(f), EPSILON);
 
 		// test 2 where MonetaryDistanceCostRate is fixed to -1.0
 		double monetaryDistanceRatePt = -1.0;
-		f.config.planCalcScore().getModes().get(TransportMode.pt).setMonetaryDistanceRate(monetaryDistanceRatePt);
-		f.config.planCalcScore().setMarginalUtilityOfMoney(0.5);
+		f.config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.pt).setMonetaryDistanceRate(monetaryDistanceRatePt);
+		f.config.planCalcScore().getScoringParameters(null).setMarginalUtilityOfMoney(0.5);
 
 		assertEquals(-10000.0, calcScore(f), EPSILON);
 	}
@@ -520,17 +520,17 @@ public class CharyparNagelScoringFunctionTest {
 		PlanCalcScoreConfigGroup.ActivityParams params = new PlanCalcScoreConfigGroup.ActivityParams("h2");
 		params.setTypicalDuration(8*3600);
 		
-		f.config.planCalcScore().addActivityParams(params);
-		f.config.planCalcScore().getActivityParams("h").setTypicalDuration(6.0 * 3600);
+		f.config.planCalcScore().getScoringParameters(null).addActivityParams(params);
+		f.config.planCalcScore().getScoringParameters(null).getActivityParams("h").setTypicalDuration(6.0 * 3600);
 		
 		if(typicalDurationComputation.equals(TypicalDurationScoreComputation.uniform)){
-			for(ActivityParams p : f.config.planCalcScore().getActivityParams()){
+			for(ActivityParams p : f.config.planCalcScore().getScoringParameters(null).getActivityParams()){
 				p.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.uniform);
 			}
 		}	
 		
 		double perf = +6.0;
-		f.config.planCalcScore().setPerforming_utils_hr(perf);
+		f.config.planCalcScore().getScoringParameters(null).setPerforming_utils_hr(perf);
 		double zeroUtilDurW = getZeroUtilDuration_hrs(3.0, 1.0);
 		double zeroUtilDurH = getZeroUtilDuration_hrs(6.0, 1.0);
 		double zeroUtilDurH2 = getZeroUtilDuration_hrs(8.0, 1.0);
@@ -560,11 +560,11 @@ public class CharyparNagelScoringFunctionTest {
 		// this would amount to a smaller-than-zero expected contribution of
 		// the home activity at 7 hours, and smaller-than-zero contributions
 		// are truncated, so we wouldn't test anything. :-/
-		f.config.planCalcScore().getActivityParams("h").setTypicalDuration(7.0 * 3600);
-		f.config.planCalcScore().setPerforming_utils_hr(perf);
+		f.config.planCalcScore().getScoringParameters(null).getActivityParams("h").setTypicalDuration(7.0 * 3600);
+		f.config.planCalcScore().getScoringParameters(null).setPerforming_utils_hr(perf);
 
 		if(typicalDurationComputation.equals(TypicalDurationScoreComputation.uniform)){
-			for(ActivityParams p : f.config.planCalcScore().getActivityParams()){
+			for(ActivityParams p : f.config.planCalcScore().getScoringParameters(null).getActivityParams()){
 				p.setTypicalDurationScoreComputation(TypicalDurationScoreComputation.uniform);
 			}
 		}	

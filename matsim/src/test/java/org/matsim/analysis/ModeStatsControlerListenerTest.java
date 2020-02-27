@@ -27,6 +27,7 @@ import org.matsim.core.config.groups.ControlerConfigGroup;
 import org.matsim.core.config.groups.ControlerConfigGroup.CompressionType;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ModeParams;
+import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ScoringParameterSet;
 import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.core.controler.OutputDirectoryHierarchy.OverwriteFileSetting;
 import org.matsim.core.controler.events.IterationEndsEvent;
@@ -69,13 +70,14 @@ public class ModeStatsControlerListenerTest {
 		ModeParams modeParam5 = new ModeParams(TransportMode.ride);
 		ModeParams modeParam6 = new ModeParams(TransportMode.other);
 		ModeParams modeParam7 = new ModeParams(TransportMode.bike);
-		scoreConfig.addModeParams(modeParam1);
-		scoreConfig.addModeParams(modeParam2);
-		scoreConfig.addModeParams(modeParam3);
-		scoreConfig.addModeParams(modeParam4);
-		scoreConfig.addModeParams(modeParam5);
-		scoreConfig.addModeParams(modeParam6);
-		scoreConfig.addModeParams(modeParam7);
+		ScoringParameterSet scoreParameters = scoreConfig.getOrCreateScoringParameters(null);
+		scoreParameters.addModeParams(modeParam1);
+		scoreParameters.addModeParams(modeParam2);
+		scoreParameters.addModeParams(modeParam3);
+		scoreParameters.addModeParams(modeParam4);
+		scoreParameters.addModeParams(modeParam5);
+		scoreParameters.addModeParams(modeParam6);
+		scoreParameters.addModeParams(modeParam7);
 
 		/* ########Person 1######### --- creating person 1*/
 		final Plan plan = PopulationUtils

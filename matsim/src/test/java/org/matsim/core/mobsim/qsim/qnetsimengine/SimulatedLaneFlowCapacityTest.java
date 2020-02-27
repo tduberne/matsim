@@ -201,7 +201,7 @@ public class SimulatedLaneFlowCapacityTest extends MatsimTestCase{
 		Config config = ConfigUtils.createConfig();
 		ActivityParams dummyAct = new ActivityParams("dummy");
 		dummyAct.setTypicalDuration(12 * 3600);
-		config.planCalcScore().addActivityParams(dummyAct);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(dummyAct);
 		
 		MutableScenario scenario = (MutableScenario) ScenarioUtils.createScenario(config);
 		initNetwork(scenario.getNetwork());
@@ -228,7 +228,7 @@ public class SimulatedLaneFlowCapacityTest extends MatsimTestCase{
 		Config config = ConfigUtils.createConfig();
 		ActivityParams dummyAct = new ActivityParams("dummy");
 		dummyAct.setTypicalDuration(12 * 3600);
-		config.planCalcScore().addActivityParams(dummyAct);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(dummyAct);
 		
 		MutableScenario scenario = (MutableScenario) ScenarioUtils.createScenario(config);
 		initNetwork(scenario.getNetwork());
@@ -259,7 +259,7 @@ public class SimulatedLaneFlowCapacityTest extends MatsimTestCase{
 		Config config = ConfigUtils.createConfig();
 		ActivityParams dummyAct = new ActivityParams("dummy");
 		dummyAct.setTypicalDuration(12 * 3600);
-		config.planCalcScore().addActivityParams(dummyAct);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(dummyAct);
 		
 		MutableScenario scenario = (MutableScenario) ScenarioUtils.createScenario(config);
 		initNetwork(scenario.getNetwork());
@@ -291,7 +291,7 @@ public class SimulatedLaneFlowCapacityTest extends MatsimTestCase{
 		Config config = ConfigUtils.createConfig();
 		ActivityParams dummyAct = new ActivityParams("dummy");
 		dummyAct.setTypicalDuration(12 * 3600);
-		config.planCalcScore().addActivityParams(dummyAct);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(dummyAct);
 		
 		MutableScenario scenario = (MutableScenario) ScenarioUtils.createScenario(config);
 		initNetwork(scenario.getNetwork());

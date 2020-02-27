@@ -40,7 +40,7 @@ public class TransitIntegrationTest {
 		PlanCalcScoreConfigGroup.ActivityParams params = new PlanCalcScoreConfigGroup.ActivityParams(PtConstants.TRANSIT_ACTIVITY_TYPE);
 		params.setScoringThisActivityAtAll(true);
 		params.setTypicalDuration(60.0);
-		config.planCalcScore().addActivityParams(params);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(params);
 		// ---
 		config.controler().setLastIteration(0); // in case the exception is _not_ thrown, we don't need 100 iterations to find that out ...
 		// ---

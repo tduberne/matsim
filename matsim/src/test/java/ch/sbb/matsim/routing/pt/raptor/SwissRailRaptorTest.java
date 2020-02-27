@@ -822,7 +822,7 @@ public class SwissRailRaptorTest {
         walkParameters.setTeleportedModeSpeed(beelineDistanceFactor); // set it such that the beelineWalkSpeed is exactly 1
         config.plansCalcRoute().addParameterSet(walkParameters);
 
-        config.planCalcScore().setUtilityOfLineSwitch(-transferFixedCost);
+        config.planCalcScore().getScoringParameters(null).setUtilityOfLineSwitch(-transferFixedCost);
         srrConfig.setTransferPenaltyBaseCost(transferFixedCost);
         srrConfig.setTransferPenaltyCostPerTravelTimeHour(transferRelativeCostFactor);
 
@@ -851,11 +851,11 @@ public class SwissRailRaptorTest {
 
         ModeParams railParams = new ModeParams("rail");
         railParams.setMarginalUtilityOfTraveling(-6.0);
-        f.config.planCalcScore().addModeParams(railParams);
+        f.config.planCalcScore().getScoringParameters(null).addModeParams(railParams);
 
         ModeParams roadParams = new ModeParams("road");
         roadParams.setMarginalUtilityOfTraveling(-6.0);
-        f.config.planCalcScore().addModeParams(roadParams);
+        f.config.planCalcScore().getScoringParameters(null).addModeParams(roadParams);
 
         TransitRouter router = createTransitRouter(f.schedule, f.config, f.network);
         Coord toCoord = new Coord(16100, 10050);
@@ -913,11 +913,11 @@ public class SwissRailRaptorTest {
 
             ModeParams railParams = new ModeParams("rail");
             railParams.setMarginalUtilityOfTraveling(-6.0);
-            config.planCalcScore().addModeParams(railParams);
+            config.planCalcScore().getScoringParameters(null).addModeParams(railParams);
 
             ModeParams roadParams = new ModeParams("road");
             roadParams.setMarginalUtilityOfTraveling(-6.0);
-            config.planCalcScore().addModeParams(roadParams);
+            config.planCalcScore().getScoringParameters(null).addModeParams(roadParams);
         }
 
         { // test with similar costs, the red line should still be cheaper
@@ -945,7 +945,7 @@ public class SwissRailRaptorTest {
             // (the access/egress legs to red are each 2 meters shorter than to green line, which adds a little additional penalty for the green line, about 0.02)
             ModeParams roadParams = new ModeParams("road");
             roadParams.setMarginalUtilityOfTraveling(2.83);
-            config.planCalcScore().addModeParams(roadParams);
+            config.planCalcScore().getScoringParameters(null).addModeParams(roadParams);
 
             TransitRouter router = createTransitRouter(f.schedule, config, f.network);
             List<Leg> legs = router.calcRoute(new FakeFacility(fromCoord), new FakeFacility(toCoord), 6.0 * 3600 - 5 * 60, null);

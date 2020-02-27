@@ -39,6 +39,7 @@ import org.matsim.core.api.experimental.events.EventsManager;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
 import org.matsim.core.config.groups.ScenarioConfigGroup;
+import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ScoringParameterSet;
 import org.matsim.core.events.EventsUtils;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.scenario.ScenarioUtils;
@@ -115,10 +116,11 @@ public class CharyparNagelLegScoringPtChangeTest {
 		final Random random = new Random( seed );
 
 		final PlanCalcScoreConfigGroup conf = new PlanCalcScoreConfigGroup();
-		conf.setMarginalUtlOfWaitingPt_utils_hr( random.nextDouble() * 1000 );
-		conf.getModes().get(TransportMode.pt).setMonetaryDistanceRate(random.nextDouble() * 1000);
-		conf.getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(random.nextDouble() * 1000);
-		conf.setUtilityOfLineSwitch( random.nextDouble() * 1000 );
+		ScoringParameterSet scoringParameters = conf.getOrCreateScoringParameters(null);
+		scoringParameters.setMarginalUtlOfWaitingPt_utils_hr( random.nextDouble() * 1000 );
+		scoringParameters.getModes().get(TransportMode.pt).setMonetaryDistanceRate(random.nextDouble() * 1000);
+		scoringParameters.getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(random.nextDouble() * 1000);
+		scoringParameters.setUtilityOfLineSwitch( random.nextDouble() * 1000 );
 
 		final ScenarioConfigGroup scenarioConfig = new ScenarioConfigGroup();
 

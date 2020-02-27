@@ -1693,7 +1693,7 @@ public class RaptorStopFinderTest {
 
             PlanCalcScoreConfigGroup.ModeParams modeParams = new PlanCalcScoreConfigGroup.ModeParams("zoomer");
             modeParams.setMarginalUtilityOfTraveling(0.);
-            f0.scenario.getConfig().planCalcScore().addModeParams(modeParams);
+            f0.scenario.getConfig().planCalcScore().getScoringParameters(null).addModeParams(modeParams);
 
             f0.srrConfig.setUseIntermodalAccessEgress(true);
             SwissRailRaptorConfigGroup.IntermodalAccessEgressParameterSet zoomerAccess = new SwissRailRaptorConfigGroup.IntermodalAccessEgressParameterSet();
@@ -1760,7 +1760,7 @@ public class RaptorStopFinderTest {
 
             PlanCalcScoreConfigGroup.ModeParams modeParams = new PlanCalcScoreConfigGroup.ModeParams("zoomer");
             modeParams.setMarginalUtilityOfTraveling(0.);
-            f0.scenario.getConfig().planCalcScore().addModeParams(modeParams);
+            f0.scenario.getConfig().planCalcScore().getScoringParameters(null).addModeParams(modeParams);
 
             f0.srrConfig.setUseIntermodalAccessEgress(true);
             SwissRailRaptorConfigGroup.IntermodalAccessEgressParameterSet zoomerAccess = new SwissRailRaptorConfigGroup.IntermodalAccessEgressParameterSet();

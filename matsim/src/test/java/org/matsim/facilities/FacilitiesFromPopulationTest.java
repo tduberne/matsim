@@ -39,6 +39,7 @@ import org.matsim.api.core.v01.population.PopulationFactory;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ActivityParams;
+import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.scenario.ScenarioUtils;
 
 /**
@@ -86,8 +87,10 @@ public class FacilitiesFromPopulationTest {
 		ActivityParams workParams = new ActivityParams("work");
 		workParams.setOpeningTime(7*3600);
 		workParams.setClosingTime(19*3600);
-		config.addActivityParams(homeParams);
-		config.addActivityParams(workParams);
+		for (String s : f.subpopulations) {
+			config.getOrCreateScoringParameters(s).addActivityParams(homeParams);
+			config.getOrCreateScoringParameters(s).addActivityParams(workParams);
+		}
 		generator.assignOpeningTimes( config );
 		generator.run(f.scenario.getPopulation());
 		
@@ -194,6 +197,8 @@ public class FacilitiesFromPopulationTest {
 	 */
 	private static class Fixture {
 		Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
+
+		final String[] subpopulations = {null, "hobbits", "elfs"};
 		
 		public Fixture() {
 			createNetwork();
@@ -233,20 +238,21 @@ public class FacilitiesFromPopulationTest {
 			Population pop = scenario.getPopulation();
 			PopulationFactory factory = pop.getFactory();
 			
-			pop.addPerson(createPersonWithPlan(factory, "1", 200, 10, 800, 300));
-			pop.addPerson(createPersonWithPlan(factory, "2", 500, -10, 800, 300));
-			pop.addPerson(createPersonWithPlan(factory, "3", 600, 20, 800, 300));
-			pop.addPerson(createPersonWithPlan(factory, "4", 900, 100, 400, 500));
-			pop.addPerson(createPersonWithPlan(factory, "5", 1000, 300, 400, 500));
-			pop.addPerson(createPersonWithPlan(factory, "6", 700, 300, 400, 500));
-			pop.addPerson(createPersonWithPlan(factory, "7", 800, 400, 400, 500));
-			pop.addPerson(createPersonWithPlan(factory, "8", 440, 500, 300, 100));
-			pop.addPerson(createPersonWithPlan(factory, "9", 250, 250, 300, 100));
-			pop.addPerson(createPersonWithPlan(factory, "0", 0, 100, 300, 100));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[0], "1", 200, 10, 800, 300));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[1], "2", 500, -10, 800, 300));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[2], "3", 600, 20, 800, 300));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[0], "4", 900, 100, 400, 500));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[1], "5", 1000, 300, 400, 500));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[2], "6", 700, 300, 400, 500));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[0], "7", 800, 400, 400, 500));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[1], "8", 440, 500, 300, 100));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[2], "9", 250, 250, 300, 100));
+			pop.addPerson(createPersonWithPlan(factory, subpopulations[0], "0", 0, 100, 300, 100));
 		}
 		
-		private Person createPersonWithPlan(PopulationFactory factory, String id, double homeX, double homeY, double workX, double workY) {
+		private Person createPersonWithPlan(PopulationFactory factory, String subpopulation, String id, double homeX, double homeY, double workX, double workY) {
 			Person person = factory.createPerson(Id.create(id, Person.class));
+			PopulationUtils.putSubpopulation(person, subpopulation);
 			Plan plan = factory.createPlan();
 			person.addPlan(plan);
 			Activity home1 = factory.createActivityFromCoord("home", new Coord(homeX, homeY));

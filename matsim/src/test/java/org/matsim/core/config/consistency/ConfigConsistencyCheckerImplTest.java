@@ -60,7 +60,7 @@ public class ConfigConsistencyCheckerImplTest {
 		Config config = new Config();
 		config.addCoreModules();
 
-		config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(3.0);
+		config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.car).setMarginalUtilityOfTraveling(3.0);
 
 		LogCounter logger = new LogCounter(Level.WARN);
 		try {
@@ -78,7 +78,7 @@ public class ConfigConsistencyCheckerImplTest {
 		Config config = new Config();
 		config.addCoreModules();
 
-		config.planCalcScore().getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(3.0);
+		config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(3.0);
 
 		LogCounter logger = new LogCounter(Level.WARN);
 		try {
@@ -96,7 +96,7 @@ public class ConfigConsistencyCheckerImplTest {
 		Config config = new Config();
 		config.addCoreModules();
 
-		config.planCalcScore().getModes().get(TransportMode.bike).setMarginalUtilityOfTraveling(3.0);
+		config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.bike).setMarginalUtilityOfTraveling(3.0);
 
 		LogCounter logger = new LogCounter(Level.WARN);
 		try {
@@ -114,7 +114,7 @@ public class ConfigConsistencyCheckerImplTest {
 		Config config = new Config();
 		config.addCoreModules();
 
-		config.planCalcScore().getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling(3.0);
+		config.planCalcScore().getScoringParameters(null).getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling(3.0);
 
 		LogCounter logger = new LogCounter(Level.WARN);
 		try {
@@ -134,7 +134,7 @@ public class ConfigConsistencyCheckerImplTest {
 
 		ActivityParams transitActivityParams = new ActivityParams(PtConstants.TRANSIT_ACTIVITY_TYPE);
 		transitActivityParams.setClosingTime(1.) ;
-		config.planCalcScore().addActivityParams(transitActivityParams);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(transitActivityParams);
 
 		try {
 			new ConfigConsistencyCheckerImpl().checkPlanCalcScore(config);

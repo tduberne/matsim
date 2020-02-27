@@ -197,7 +197,7 @@ public class ControlerIT {
 		ActivityParams actParams = new ActivityParams("h");
 		actParams.setTypicalDuration(8*3600);
 		actParams.setPriority(1.0);
-		config.planCalcScore().addActivityParams(actParams);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(actParams);
 		// - define iterations
 		config.controler().setLastIteration(0);
 		// - make sure we don't use threads, as they are not deterministic
@@ -327,7 +327,7 @@ public class ControlerIT {
 		ActivityParams actParams = new ActivityParams("h");
 		actParams.setTypicalDuration(8*3600);
 		actParams.setPriority(1.0);
-		config.planCalcScore().addActivityParams(actParams);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(actParams);
 		// - define iterations
 		config.controler().setLastIteration(0);
 		// - make sure we don't use threads, as they are not deterministic
@@ -425,7 +425,7 @@ public class ControlerIT {
 		ActivityParams actParams = new ActivityParams("h");
 		actParams.setTypicalDuration(8*3600);
 		actParams.setPriority(1.0);
-		config.planCalcScore().addActivityParams(actParams);
+		config.planCalcScore().getScoringParameters(null).addActivityParams(actParams);
 		// - define iterations
 		config.controler().setLastIteration(0);
 		// - make sure we don't use threads, as they are not deterministic

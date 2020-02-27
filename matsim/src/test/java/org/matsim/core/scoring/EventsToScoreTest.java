@@ -64,7 +64,7 @@ public class EventsToScoreTest extends MatsimTestCase {
 		config.controler().setFirstIteration(10);
 		config.controler().setLastIteration(110);
 		
-		config.planCalcScore().setMarginalUtilityOfMoney(1.);
+		config.planCalcScore().getOrCreateScoringParameters(null).setMarginalUtilityOfMoney(1.);
 
 		config.planCalcScore().setFractionOfIterationsToStartScoreMSA(0.9);
 		

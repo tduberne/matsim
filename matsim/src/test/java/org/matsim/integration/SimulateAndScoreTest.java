@@ -40,6 +40,7 @@ import org.matsim.core.api.experimental.events.EventsManager;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
+import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ScoringParameterSet;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Injector;
 import org.matsim.core.controler.PrepareForSimUtils;
@@ -88,15 +89,16 @@ public class SimulateAndScoreTest extends MatsimTestCase {
 		PlanCalcScoreConfigGroup.ActivityParams transitActivityParams = new PlanCalcScoreConfigGroup.ActivityParams(PtConstants.TRANSIT_ACTIVITY_TYPE);
 		transitActivityParams.setTypicalDuration(120.0);
 
-		config.planCalcScore().setPerforming_utils_hr(0);
-		config.planCalcScore().getModes().get(TransportMode.car).setMarginalUtilityOfTraveling((double) 0);
-		config.planCalcScore().getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling((double) 0);
-		config.planCalcScore().getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling((double) 0);
-		config.planCalcScore().getModes().get(TransportMode.car).setMonetaryDistanceRate((double) 10);
-		config.planCalcScore().getModes().get(TransportMode.pt).setMonetaryDistanceRate((double) 0);
-		config.planCalcScore().addActivityParams(h);
-		config.planCalcScore().addActivityParams(w);
-		config.planCalcScore().addActivityParams(transitActivityParams);
+		ScoringParameterSet scoringParameters = config.planCalcScore().getOrCreateScoringParameters(null);
+		scoringParameters.setPerforming_utils_hr(0);
+		scoringParameters.getModes().get(TransportMode.car).setMarginalUtilityOfTraveling((double) 0);
+		scoringParameters.getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling((double) 0);
+		scoringParameters.getModes().get(TransportMode.walk).setMarginalUtilityOfTraveling((double) 0);
+		scoringParameters.getModes().get(TransportMode.car).setMonetaryDistanceRate((double) 10);
+		scoringParameters.getModes().get(TransportMode.pt).setMonetaryDistanceRate((double) 0);
+		scoringParameters.addActivityParams(h);
+		scoringParameters.addActivityParams(w);
+		scoringParameters.addActivityParams(transitActivityParams);
 		
 		// ---
 		
@@ -272,13 +274,16 @@ public class SimulateAndScoreTest extends MatsimTestCase {
 		h.setTypicalDuration(16 * 3600);
 		PlanCalcScoreConfigGroup.ActivityParams w = new PlanCalcScoreConfigGroup.ActivityParams("w");
 		w.setTypicalDuration(8 * 3600);
-		scenario.getConfig().planCalcScore().setPerforming_utils_hr(0);
+
+		ScoringParameterSet scoringParameters = config.planCalcScore().getOrCreateScoringParameters(null);
+
+		scoringParameters.setPerforming_utils_hr(0);
 		final double travelingPt = -1.00;
-		scenario.getConfig().planCalcScore().getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(travelingPt);
+		scoringParameters.getModes().get(TransportMode.pt).setMarginalUtilityOfTraveling(travelingPt);
 		double monetaryDistanceRatePt = -0.001;
-		scenario.getConfig().planCalcScore().getModes().get(TransportMode.pt).setMonetaryDistanceRate(monetaryDistanceRatePt);
-		scenario.getConfig().planCalcScore().addActivityParams(h);
-		scenario.getConfig().planCalcScore().addActivityParams(w);
+		scoringParameters.getModes().get(TransportMode.pt).setMonetaryDistanceRate(monetaryDistanceRatePt);
+		scoringParameters.addActivityParams(h);
+		scoringParameters.addActivityParams(w);
 		EventsToScore scorer = EventsToScore.createWithScoreUpdating(scenario, new CharyparNagelScoringFunctionFactory(scenario), events);
 		EventsCollector handler = new EventsCollector();
 		events.addHandler(handler);

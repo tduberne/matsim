@@ -213,7 +213,7 @@ public class NetsimRoutingConsistencyTest {
 			
 			ActivityParams activityParams = new ActivityParams("A");
 			activityParams.setTypicalDuration(100.0);
-			config.planCalcScore().addActivityParams(activityParams);
+			config.planCalcScore().getScoringParameters(null).addActivityParams(activityParams);
 			
 			Scenario scenario = ScenarioUtils.createScenario(config);
 			Network network = scenario.getNetwork();

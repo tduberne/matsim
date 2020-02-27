@@ -35,7 +35,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
                 new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start with a stop on the green line
         TransitStopFacility fromStop = f.schedule.getFacilities().get(Id.create(23, TransitStopFacility.class));
@@ -80,7 +80,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
             new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start with a stop on the green line
         TransitStopFacility fromStop = f.schedule.getFacilities().get(Id.create(23, TransitStopFacility.class));
@@ -127,7 +127,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
             new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start with a stop on the green line
         TransitStopFacility fromStop = f.schedule.getFacilities().get(Id.create(23, TransitStopFacility.class));
@@ -173,7 +173,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
             new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start with a stop on the green line
         TransitStopFacility fromStop = f.schedule.getFacilities().get(Id.create(23, TransitStopFacility.class));
@@ -221,7 +221,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
             new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start at B and H
         TransitStopFacility fromStopB = f.schedule.getFacilities().get(Id.create(2, TransitStopFacility.class));
@@ -270,7 +270,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
             new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start at B and H
         TransitStopFacility fromStopB = f.schedule.getFacilities().get(Id.create(2, TransitStopFacility.class));
@@ -321,7 +321,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
             new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start with a stop on the green line
         TransitStopFacility fromStop = f.schedule.getFacilities().get(Id.create(23, TransitStopFacility.class));
@@ -356,7 +356,7 @@ public class SwissRailRaptorTreeTest {
         SwissRailRaptor raptor = new SwissRailRaptor(data, new DefaultRaptorParametersForPerson(f.scenario.getConfig()),
             new LeastCostRaptorRouteSelector(), stopFinder );
 
-        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config);
+        RaptorParameters raptorParams = RaptorUtils.createParameters(f.config, null);
 
         // start with a stop on the green line
         TransitStopFacility fromStop = f.schedule.getFacilities().get(Id.create(23, TransitStopFacility.class));

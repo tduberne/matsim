@@ -102,12 +102,12 @@ public class InnovationSwitchOffTest {
 		{
 			ActivityParams params = new ActivityParams("h");
 			params.setTypicalDuration(12. * 3600.);
-			config.planCalcScore().addActivityParams(params);
+			config.planCalcScore().getOrCreateScoringParameters(null).addActivityParams(params);
 		}
 		{
 			ActivityParams params = new ActivityParams("w");
 			params.setTypicalDuration(8. * 3600.);
-			config.planCalcScore().addActivityParams(params);
+			config.planCalcScore().getOrCreateScoringParameters(null).addActivityParams(params);
 		}
 		config.controler().setCreateGraphs(false);
 

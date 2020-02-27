@@ -153,7 +153,7 @@ public class DeparturesOnSameLinkSameTimeTest {
 			config.plansCalcRoute().setNetworkModes(Arrays.asList(travelMode));
 			config.travelTimeCalculator().setAnalyzedModesAsString(travelMode );
 			config.travelTimeCalculator().setSeparateModes(true);
-			config.planCalcScore().getOrCreateModeParams(travelMode);
+			config.planCalcScore().getScoringParameters(null).getOrCreateModeParams(travelMode);
 
 			network = this.scenario.getNetwork();
 			population = this.scenario.getPopulation();

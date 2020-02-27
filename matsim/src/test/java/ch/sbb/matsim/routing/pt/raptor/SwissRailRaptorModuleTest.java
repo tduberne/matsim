@@ -143,14 +143,14 @@ public class SwissRailRaptorModuleTest {
         Config config = f.config;
         PlanCalcScoreConfigGroup.ActivityParams homeScoring = new PlanCalcScoreConfigGroup.ActivityParams("home");
         homeScoring.setTypicalDuration(16*3600);
-        f.config.planCalcScore().addActivityParams(homeScoring);
+        f.config.planCalcScore().getScoringParameters(null).addActivityParams(homeScoring);
         PlanCalcScoreConfigGroup.ActivityParams workScoring = new PlanCalcScoreConfigGroup.ActivityParams("work");
         workScoring.setTypicalDuration(8*3600);
-        f.config.planCalcScore().addActivityParams(workScoring);
+        f.config.planCalcScore().getScoringParameters(null).addActivityParams(workScoring);
 
         PlanCalcScoreConfigGroup.ModeParams walk = new PlanCalcScoreConfigGroup.ModeParams(TransportMode.walk);
         walk.setMarginalUtilityOfTraveling(0.0);
-        f.config.planCalcScore().addModeParams(walk);
+        f.config.planCalcScore().getScoringParameters(null).addModeParams(walk);
 
         // prepare rest of config
 
@@ -249,12 +249,12 @@ public class SwissRailRaptorModuleTest {
         Config config = f.config;
         PlanCalcScoreConfigGroup.ActivityParams homeScoring = new PlanCalcScoreConfigGroup.ActivityParams("home");
         homeScoring.setTypicalDuration(16*3600);
-        f.config.planCalcScore().addActivityParams(homeScoring);
+        f.config.planCalcScore().getScoringParameters(null).addActivityParams(homeScoring);
         PlanCalcScoreConfigGroup.ActivityParams workScoring = new PlanCalcScoreConfigGroup.ActivityParams("work");
         workScoring.setTypicalDuration(8*3600);
-        f.config.planCalcScore().addActivityParams(workScoring);
+        f.config.planCalcScore().getScoringParameters(null).addActivityParams(workScoring);
 
-        f.config.planCalcScore().getOrCreateModeParams(TransportMode.walk).setMarginalUtilityOfTraveling(0.0);
+        f.config.planCalcScore().getScoringParameters(null).getOrCreateModeParams(TransportMode.walk).setMarginalUtilityOfTraveling(0.0);
 
         StrategySettings reRoute = new StrategySettings();
         reRoute.setStrategyName("ReRoute");
